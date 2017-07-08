@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.15
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Borlay.Wallet", "Borlay.Wallet\Borlay.Wallet.csproj", "{E6828631-FEFF-4478-9A0D-003EAE40901F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Borlay.Wallet.Storage", "Borlay.Wallet.Storage\Borlay.Wallet.Storage.csproj", "{81708CF8-AFC1-4614-A0EB-4FCC5EAD50ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E6828631-FEFF-4478-9A0D-003EAE40901F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6828631-FEFF-4478-9A0D-003EAE40901F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6828631-FEFF-4478-9A0D-003EAE40901F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6828631-FEFF-4478-9A0D-003EAE40901F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81708CF8-AFC1-4614-A0EB-4FCC5EAD50ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81708CF8-AFC1-4614-A0EB-4FCC5EAD50ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81708CF8-AFC1-4614-A0EB-4FCC5EAD50ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81708CF8-AFC1-4614-A0EB-4FCC5EAD50ED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

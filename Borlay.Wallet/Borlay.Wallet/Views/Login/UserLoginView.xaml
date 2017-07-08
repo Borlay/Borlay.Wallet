@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="Borlay.Wallet.Views.Login.UserLoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Borlay.Wallet.Views.Login"
+             mc:Ignorable="d"  SnapsToDevicePixels="True"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Border SnapsToDevicePixels="True" Height="350" Width="480" Background="#fff" CornerRadius="3" BorderBrush="#ccc" BorderThickness="1">
+        <Border.BitmapEffect>
+            <DropShadowBitmapEffect ShadowDepth="3" Color="#ccc" />
+        </Border.BitmapEffect>
+        <StackPanel SnapsToDevicePixels="True" Width="350" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Login" FontSize="18"  Margin="10 20" />
+            <StackPanel Width="270" HorizontalAlignment="Center">
+                <TextBox Tag="yourmail@yourmail.com" Text="{Binding UserName}" Margin="10" />
+                <TextBox Tag="Password" Text="{Binding Password}" Margin="10" />
+                <Button Command="{Binding LoginCommand}" Height="30" Width="100" Content="Login" Margin="10 20 10 10" />
+            </StackPanel>
+            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding Info}" Height="60" Margin="10 20 10 10" Foreground="#999" />
+        </StackPanel>
+    </Border>
+</UserControl>

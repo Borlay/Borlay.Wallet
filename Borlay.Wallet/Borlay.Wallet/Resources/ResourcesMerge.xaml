@@ -1,0 +1,28 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Borlay.Wallet.Resources">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary 
+                  Source="ControlMaps.xaml">
+        </ResourceDictionary>
+        <ResourceDictionary 
+                  Source="TextBoxStyle.xaml">
+        </ResourceDictionary>
+        <ResourceDictionary 
+                  Source="Brushes.xaml">
+        </ResourceDictionary>
+        <ResourceDictionary 
+                  Source="ScrollBarStyle.xaml">
+        </ResourceDictionary>
+        <ResourceDictionary 
+                  Source="ListItemStyle.xaml">
+        </ResourceDictionary>
+        <ResourceDictionary 
+                  Source="RadioButtonStyle.xaml">
+        </ResourceDictionary>
+        <ResourceDictionary 
+                  Source="ButtonStyle.xaml">
+        </ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

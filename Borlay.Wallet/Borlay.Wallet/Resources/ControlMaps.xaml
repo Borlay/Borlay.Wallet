@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Borlay.Wallet.Resources"
+                    xmlns:view="clr-namespace:Borlay.Wallet.Views" 
+                    xmlns:model="clr-namespace:Borlay.Wallet.Models"
+                     xmlns:loginView="clr-namespace:Borlay.Wallet.Views.Login" 
+                    xmlns:loginModel="clr-namespace:Borlay.Wallet.Models.Login">
+    <DataTemplate DataType="{x:Type loginModel:UserLoginModel}">
+        <loginView:UserLoginView />
+    </DataTemplate>
+
+</ResourceDictionary>
