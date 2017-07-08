@@ -5,35 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Borlay.Wallet.Models.Login
+namespace Borlay.Wallet.Models.General
 {
-    public class UserLoginModel : ModelBase
+    public abstract class LoginModelBase : ModelBase
     {
-        private string userName;
         private string password;
         private string info;
-
-        public UserLoginModel(Action<UserLoginModel> loginAction)
-        {
-            Info = "Login to your wallet using login name and password. Remember your credentials as we can't restore it.";
-            this.LoginCommand = new ActionCommand(() => loginAction(this));
-        }
-
-        public string UserName
-        {
-            get
-            {
-                return this.userName;
-            }
-            set
-            {
-                if (value != this.userName)
-                {
-                    this.userName = value;
-                    NotifyPropertyChanged();
-                }
-            }
-        }
+        protected abstract string DefaultInfo { get; } 
 
         public string Password
         {
@@ -68,6 +46,11 @@ namespace Borlay.Wallet.Models.Login
         }
 
         public ICommand LoginCommand
+        {
+            get; set;
+        }
+
+        public ICommand CancelCommand
         {
             get; set;
         }

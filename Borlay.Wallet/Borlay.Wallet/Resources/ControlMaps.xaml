@@ -3,10 +3,13 @@
                     xmlns:local="clr-namespace:Borlay.Wallet.Resources"
                     xmlns:view="clr-namespace:Borlay.Wallet.Views" 
                     xmlns:model="clr-namespace:Borlay.Wallet.Models"
-                     xmlns:loginView="clr-namespace:Borlay.Wallet.Views.Login" 
-                    xmlns:loginModel="clr-namespace:Borlay.Wallet.Models.Login">
-    <DataTemplate DataType="{x:Type loginModel:UserLoginModel}">
-        <loginView:UserLoginView />
+                     xmlns:generalView="clr-namespace:Borlay.Wallet.Views.General" 
+                    xmlns:generalModel="clr-namespace:Borlay.Wallet.Models.General">
+    <DataTemplate DataType="{x:Type generalModel:UserLoginModel}">
+        <generalView:UserLoginView />
     </DataTemplate>
-
+    <DataTemplate DataType="{x:Type generalModel:ConfirmPasswordModel}">
+        <generalView:ConfirmPasswordView />
+    </DataTemplate>
+    
 </ResourceDictionary>

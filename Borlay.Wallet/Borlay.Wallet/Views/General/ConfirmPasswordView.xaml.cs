@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Borlay.Wallet.Views.Login
+namespace Borlay.Wallet.Views.General
 {
     /// <summary>
-    /// Interaction logic for UserLoginView.xaml
+    /// Interaction logic for ConfirmPasswordView.xaml
     /// </summary>
-    public partial class UserLoginView : UserControl
+    public partial class ConfirmPasswordView : UserControl
     {
-        public UserLoginView()
+        public ConfirmPasswordView()
         {
             InitializeComponent();
         }

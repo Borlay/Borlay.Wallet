@@ -20,6 +20,7 @@ namespace Borlay.Wallet.Storage
 
         public static string EncryptPassword(string password, string saltText)
         {
+            
             // Convert the plain string pwd into bytes
             byte[] salt = UnicodeEncoding.Unicode.GetBytes(saltText);
 

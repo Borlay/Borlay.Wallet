@@ -1,4 +1,5 @@
-﻿using Borlay.Wallet.Models.Login;
+﻿using Borlay.Wallet.Models.General;
+using Borlay.Wallet.Storage;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,16 +24,78 @@ namespace Borlay.Wallet
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        private readonly StorageManager storageManager = new StorageManager();
+
         public MainWindow()
         {
             InitializeComponent();
 
             this.DataContext = this;
 
-            this.view = new UserLoginModel((model) =>
+            this.view = new UserLoginModel(async (model) =>
             {
-                model.UserName = "write";
+                try
+                {
+                    var account = await Login(model.UserName, model.Password);
+                    // do loged stuffs
+                    return null;
+                }
+                catch(Exception e)
+                {
+                    return e.Message;
+                }
+            }, ()=> Environment.Exit(0));
+        }
+
+        private async Task<AccountConfiguration> Login(string userName, string password)
+        {
+            var passwordHash = Security.EncryptPassword(password, "");
+
+            var account = storageManager.GetAccount(userName, passwordHash);
+            if(account == null)
+            {
+                account = await CreateAccount(userName, passwordHash);
+                return account;
+            }
+            else
+            {
+                return account;
+            }
+        }
+
+        public Task<AccountConfiguration> CreateAccount(string userName, string passwordHash)
+        {
+            var tcs = new TaskCompletionSource<AccountConfiguration>();
+
+            var oldView = this.View;
+            this.View = new ConfirmPasswordModel(async (model) =>
+            {
+                await Task.Yield();
+
+                if (tcs.Task.IsCanceled || tcs.Task.IsCompleted || tcs.Task.IsFaulted)
+                    return "Something bad happened";
+
+                try
+                {
+                    if (Security.EncryptPassword(model.Password, "") != passwordHash)
+                        return "Bad password";
+
+                    var account = storageManager.CreateAccount(userName, passwordHash);
+                    storageManager.SaveAccount(passwordHash, account);
+                    tcs.SetResult(account);
+                    return null;
+                }
+                catch (Exception e)
+                {
+                    return e.Message;
+                }
+            }, () =>
+            {
+                this.View = oldView;
+                tcs.SetCanceled();
             });
+
+            return tcs.Task;
         }
 
         private INotifyPropertyChanged view;

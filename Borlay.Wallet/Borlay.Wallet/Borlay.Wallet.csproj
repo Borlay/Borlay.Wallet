@@ -54,7 +54,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Views\Login\UserLoginView.xaml.cs">
+    <Compile Include="Models\ActionCommand.cs" />
+    <Compile Include="Models\General\ConfirmPasswordModel.cs" />
+    <Compile Include="Models\General\LoginModelBase.cs" />
+    <Compile Include="Views\General\ConfirmPasswordView.xaml.cs">
+      <DependentUpon>ConfirmPasswordView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\General\UserLoginView.xaml.cs">
       <DependentUpon>UserLoginView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
@@ -105,14 +111,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Login\UserLoginView.xaml">
+    <Page Include="Views\General\ConfirmPasswordView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\General\UserLoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\ActionCommand.cs" />
-    <Compile Include="Models\Login\UserLoginModel.cs" />
+    <Compile Include="Models\ActionCommandAsync.cs" />
+    <Compile Include="Models\General\UserLoginModel.cs" />
     <Compile Include="Models\ModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -139,6 +149,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Borlay.Wallet.Storage\Borlay.Wallet.Storage.csproj">
+      <Project>{81708cf8-afc1-4614-a0eb-4fcc5ead50ed}</Project>
+      <Name>Borlay.Wallet.Storage</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

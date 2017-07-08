@@ -38,19 +38,19 @@ namespace Borlay.Wallet.Storage
             File.WriteAllText(filePath, accJson);
         }
 
-        public AccountConfiguration GetAccount(string userName, string password)
+        public AccountConfiguration GetAccount(string userName, string passwordHash)
         {
             var accounts = GetAccounts();
             var account = accounts?.Accounts?.FirstOrDefault(a => a.UserName.ToLower() == userName.ToLower());
             if (account == null)
                 return null;
 
-            if(Security.IsPasswordValid(password, account.Password))
+            if(Security.IsPasswordValid(passwordHash, account.Password))
             {
                 account.LastLoginDate = DateTime.Now;
                 SaveAccounts(accounts);
 
-                DecryptWallets(password, account.Wallets);
+                DecryptWallets(passwordHash, account.Wallets);
                 return account;
             }
             else
@@ -59,35 +59,35 @@ namespace Borlay.Wallet.Storage
             }
         }
 
-        public AccountConfiguration CreateAccount(string userName, string password)
+        public AccountConfiguration CreateAccount(string userName, string passwordHash)
         {
-            var passwordHash = Security.EncryptPassword(password);
+            var doublePasswordHash = Security.EncryptPassword(passwordHash);
 
             return new AccountConfiguration()
             {
                 UserGuid = Guid.NewGuid(),
                 UserName = userName,
-                Password = passwordHash,
+                Password = doublePasswordHash,
                 CreationDate = DateTime.Now,
                 LastLoginDate = DateTime.Now,
                 Wallets = new WalletConfiguration[] { }
             };
         }
 
-        public void SaveAccount(string password, AccountConfiguration accountConfiguration)
+        public void SaveAccount(string passwordHash, AccountConfiguration accountConfiguration)
         {
             var accounts = GetAccounts();
             var userGuid = accountConfiguration.UserGuid;
             var account = accounts?.Accounts?.FirstOrDefault(a => a.UserGuid == userGuid);
             if (account != null)
             {
-                if(!Security.IsPasswordValid(password, account.Password))
+                if(!Security.IsPasswordValid(passwordHash, account.Password))
                 {
                     throw new SecurityException("Bad password");
                 }
             }
 
-            EncryptWallets(password, accountConfiguration.Wallets);
+            EncryptWallets(passwordHash, accountConfiguration.Wallets);
 
             var list = accounts?.Accounts?.ToList() ?? new List<AccountConfiguration>();
             list.RemoveAll(a => a.UserGuid == accountConfiguration.UserGuid);
@@ -97,26 +97,26 @@ namespace Borlay.Wallet.Storage
             SaveAccounts(accounts);
         }
 
-        public void EncryptWallets(string password, params WalletConfiguration[] wallets)
+        public void EncryptWallets(string passwordHash, params WalletConfiguration[] wallets)
         {
             foreach (var wallet in wallets)
             {
                 if (wallet.EncryptionType == EncryptionType.None)
                 {
-                    var encryptedPrivateKey = Security.Encrypt(wallet.PrivateKey, password);
+                    var encryptedPrivateKey = Security.Encrypt(wallet.PrivateKey, passwordHash);
                     wallet.PrivateKey = encryptedPrivateKey;
                     wallet.EncryptionType = EncryptionType.Rijndael;
                 }
             }
         }
 
-        public void  DecryptWallets(string password, params WalletConfiguration[] wallets)
+        public void  DecryptWallets(string passwordHash, params WalletConfiguration[] wallets)
         {
             foreach (var wallet in wallets)
             {
                 if (wallet.EncryptionType == EncryptionType.Rijndael)
                 {
-                    var decryptedPrivateKey = Security.Decrypt(wallet.PrivateKey, password);
+                    var decryptedPrivateKey = Security.Decrypt(wallet.PrivateKey, passwordHash);
                     wallet.PrivateKey = decryptedPrivateKey;
                     wallet.EncryptionType = EncryptionType.None;
                 }

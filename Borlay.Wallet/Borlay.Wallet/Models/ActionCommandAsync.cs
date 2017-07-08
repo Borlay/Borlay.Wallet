@@ -1,21 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Borlay.Wallet.Models
 {
-    public class ActionCommand : ICommand
+    public class ActionCommandAsync : ICommand
     {
         public event EventHandler CanExecuteChanged = (s, a) => { };
 
-        private readonly Action<object> action;
+        private readonly Func<object, Task> action;
         private bool canExecute = true;
+        private bool isExecuting = false;
 
 
-        public ActionCommand(Action<object> action)
+        public ActionCommandAsync(Func<object, Task> action)
         {
             if (action == null)
                 throw new ArgumentNullException(nameof(action));
@@ -25,12 +23,19 @@ namespace Borlay.Wallet.Models
 
         public bool CanExecute(object parameter)
         {
-            return canExecute;
+            return canExecute && !isExecuting;
         }
 
         public async void Execute(object parameter)
         {
-            action(parameter);
+            isExecuting = true;
+
+            RaiseCanExecuteChanged();
+
+            await action(parameter);
+            isExecuting = false;
+
+            RaiseCanExecuteChanged();
         }
 
         public void SetCanExecute(bool canExecute)
