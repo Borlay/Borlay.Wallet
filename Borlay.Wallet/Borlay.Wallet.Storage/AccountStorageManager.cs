@@ -9,33 +9,16 @@ using System.Threading.Tasks;
 
 namespace Borlay.Wallet.Storage
 {
-    public class StorageManager
+    public class AccountStorageManager
     {
         public AccountCollectionConfiguration GetAccounts()
         {
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            var filePath = Path.Combine(path, "AccountCollection.xml");
-            if (File.Exists(filePath))
-            {
-                var fileText = File.ReadAllText(filePath);
-                var acc = JsonConvert.DeserializeObject<AccountCollectionConfiguration>(fileText);
-                return acc;
-            }
-            else
-            {
-                return new AccountCollectionConfiguration()
-                {
-                    Accounts = new AccountConfiguration[0]
-                };
-            }
+            return ConfigurationStorage.Get<AccountCollectionConfiguration>() ?? new AccountCollectionConfiguration();
         }
 
-            public void SaveAccounts(AccountCollectionConfiguration accountCollection)
+        public void SaveAccounts(AccountCollectionConfiguration accounts)
         {
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            var filePath = Path.Combine(path, "AccountCollection.xml");
-            var accJson = JsonConvert.SerializeObject(accountCollection);
-            File.WriteAllText(filePath, accJson);
+            ConfigurationStorage.Save(accounts);
         }
 
         public AccountConfiguration GetAccount(string userName, string passwordHash)
@@ -45,18 +28,16 @@ namespace Borlay.Wallet.Storage
             if (account == null)
                 return null;
 
-            if(Security.IsPasswordValid(passwordHash, account.Password))
+            if (Security.IsPasswordValid(passwordHash, account.Password))
             {
                 account.LastLoginDate = DateTime.Now;
-                SaveAccounts(accounts);
+                ConfigurationStorage.Save(accounts);
 
                 DecryptWallets(passwordHash, account.Wallets);
                 return account;
             }
             else
-            {
-                throw new SecurityException("Password or user is invalid");
-            }
+                throw new SecurityException("Password or username is invalid");
         }
 
         public AccountConfiguration CreateAccount(string userName, string passwordHash)
@@ -77,14 +58,15 @@ namespace Borlay.Wallet.Storage
         public void SaveAccount(string passwordHash, AccountConfiguration accountConfiguration)
         {
             var accounts = GetAccounts();
+            if (accounts == null)
+                throw new NullReferenceException(nameof(accounts));
+
             var userGuid = accountConfiguration.UserGuid;
             var account = accounts?.Accounts?.FirstOrDefault(a => a.UserGuid == userGuid);
             if (account != null)
             {
-                if(!Security.IsPasswordValid(passwordHash, account.Password))
-                {
+                if (!Security.IsPasswordValid(passwordHash, account.Password))
                     throw new SecurityException("Bad password");
-                }
             }
 
             EncryptWallets(passwordHash, accountConfiguration.Wallets);
@@ -99,6 +81,8 @@ namespace Borlay.Wallet.Storage
 
         public void EncryptWallets(string passwordHash, params WalletConfiguration[] wallets)
         {
+            if (wallets == null) return;
+
             foreach (var wallet in wallets)
             {
                 if (wallet.EncryptionType == EncryptionType.None)
@@ -110,8 +94,10 @@ namespace Borlay.Wallet.Storage
             }
         }
 
-        public void  DecryptWallets(string passwordHash, params WalletConfiguration[] wallets)
+        public void DecryptWallets(string passwordHash, params WalletConfiguration[] wallets)
         {
+            if (wallets == null) return;
+
             foreach (var wallet in wallets)
             {
                 if (wallet.EncryptionType == EncryptionType.Rijndael)

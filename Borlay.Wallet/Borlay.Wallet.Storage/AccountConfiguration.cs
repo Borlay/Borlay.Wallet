@@ -27,6 +27,8 @@ namespace Borlay.Wallet.Storage
 
         public WalletType WalletType { get; set; }
 
+        public bool IsActive { get; set; }
+
         public EncryptionType EncryptionType { get; set; }
     }
 

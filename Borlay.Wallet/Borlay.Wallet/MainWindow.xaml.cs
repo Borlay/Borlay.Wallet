@@ -25,13 +25,15 @@ namespace Borlay.Wallet
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private readonly StorageManager storageManager = new StorageManager();
+        private readonly AccountStorageManager storageManager = new AccountStorageManager();
 
         public MainWindow()
         {
             InitializeComponent();
 
             this.DataContext = this;
+
+            // to remember ListCollectionView
 
             var accounts = storageManager.GetAccounts();
             var lastAccount = accounts?.Accounts?.OrderByDescending(o => o.LastLoginDate).FirstOrDefault();
