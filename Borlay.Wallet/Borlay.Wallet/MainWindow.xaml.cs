@@ -91,6 +91,18 @@ namespace Borlay.Wallet
                         return "Bad password";
 
                     var account = storageManager.CreateAccount(userName, passwordHash);
+
+                    // create new wallet
+                    account.Wallets = new WalletConfiguration[]
+                    {
+                        new WalletConfiguration()
+                        {
+                            PrivateKey = Borlay.Iota.Library.Utils.IotaApiUtils.GenerateRandomTrytes(),
+                            WalletType = WalletType.Iota,
+                            Name = "Iota"
+                        }
+                    };
+
                     storageManager.SaveAccount(passwordHash, account);
                     tcs.SetResult(account);
                     return null;
