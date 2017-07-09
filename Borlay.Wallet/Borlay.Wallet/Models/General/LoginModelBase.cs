@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Borlay.Wallet.Models.General
 {
-    public abstract class LoginModelBase : ModelBase
+    public abstract class LoginModelBase : ModelBase, IHasPassword
     {
-        private string password;
+        private SecureString password;
         private string info;
         protected abstract string DefaultInfo { get; } 
 
-        public string Password
+        public SecureString Password
         {
             get
             {
@@ -24,8 +25,25 @@ namespace Borlay.Wallet.Models.General
                 if (value != this.password)
                 {
                     this.password = value;
+                    
                     NotifyPropertyChanged();
+                    NotifyPropertyChanged(nameof(PasswordLength));
                 }
+            }
+        }
+
+        /// <summary>
+        /// Gets password length. For passwordBox tag.
+        /// </summary>
+        public int PasswordLength
+        {
+            get
+            {
+                return this.password?.Length ?? 0;
+            }
+            set
+            {
+                NotifyPropertyChanged();
             }
         }
 

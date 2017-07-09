@@ -54,8 +54,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Extensions.cs" />
     <Compile Include="Models\ActionCommand.cs" />
     <Compile Include="Models\General\ConfirmPasswordModel.cs" />
+    <Compile Include="Models\General\IHasPassword.cs" />
     <Compile Include="Models\General\LoginModelBase.cs" />
     <Compile Include="Views\General\ConfirmPasswordView.xaml.cs">
       <DependentUpon>ConfirmPasswordView.xaml</DependentUpon>
@@ -94,6 +96,10 @@
     <Page Include="Resources\ListItemStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\PasswordBoxStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\RadioButtonStyle.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -24,5 +24,8 @@
         <ResourceDictionary 
                   Source="ButtonStyle.xaml">
         </ResourceDictionary>
+        <ResourceDictionary 
+                  Source="PasswordBoxStyle.xaml">
+        </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

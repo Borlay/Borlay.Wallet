@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Borlay.Wallet.Models.General;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,12 @@ namespace Borlay.Wallet.Views.General
         public UserLoginView()
         {
             InitializeComponent();
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if(this.DataContext is IHasPassword pass)
+                pass.Password = password.SecurePassword;
         }
     }
 }

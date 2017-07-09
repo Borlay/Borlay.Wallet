@@ -14,7 +14,7 @@
             <TextBlock Text="Login" FontSize="18"  Margin="10 20" />
             <StackPanel Width="270" HorizontalAlignment="Center">
                 <TextBox Tag="yourmail@yourmail.com" Text="{Binding UserName}" Margin="10" />
-                <TextBox Tag="Password" Text="{Binding Password}" Margin="10" />
+                <PasswordBox Tag="Password" Name="password" PasswordChanged="PasswordBox_PasswordChanged" Margin="10" />
                 <StackPanel Orientation="Horizontal">
                     <Button Command="{Binding LoginCommand}" Height="30" Width="100" Content="Login" Margin="10 20 10 10" />
                     <Button Command="{Binding CancelCommand}" Height="30" Width="100" Content="Cancel" Margin="10 20 10 10" />

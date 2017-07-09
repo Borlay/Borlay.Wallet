@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -32,6 +33,9 @@ namespace Borlay.Wallet
 
             this.DataContext = this;
 
+            var accounts = storageManager.GetAccounts();
+            var lastAccount = accounts?.Accounts?.OrderByDescending(o => o.LastLoginDate).FirstOrDefault();
+
             this.view = new UserLoginModel(async (model) =>
             {
                 try
@@ -40,16 +44,20 @@ namespace Borlay.Wallet
                     // do loged stuffs
                     return null;
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     return e.Message;
                 }
-            }, ()=> Environment.Exit(0));
+            }, () => Environment.Exit(0))
+            {
+                UserName = lastAccount?.UserName
+            };
         }
 
-        private async Task<AccountConfiguration> Login(string userName, string password)
+        private async Task<AccountConfiguration> Login(string userName, SecureString password)
         {
-            var passwordHash = Security.EncryptPassword(password, "");
+            
+            var passwordHash = Security.EncryptPassword(password.GetString(), "");
 
             var account = storageManager.GetAccount(userName, passwordHash);
             if(account == null)
@@ -77,7 +85,7 @@ namespace Borlay.Wallet
 
                 try
                 {
-                    if (Security.EncryptPassword(model.Password, "") != passwordHash)
+                    if (Security.EncryptPassword(model.Password.GetString(), "") != passwordHash)
                         return "Bad password";
 
                     var account = storageManager.CreateAccount(userName, passwordHash);
