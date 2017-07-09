@@ -58,7 +58,6 @@ namespace Borlay.Wallet
 
         private async Task<AccountConfiguration> Login(string userName, SecureString password)
         {
-            
             var passwordHash = Security.EncryptPassword(password.GetString(), "");
 
             var account = storageManager.GetAccount(userName, passwordHash);
