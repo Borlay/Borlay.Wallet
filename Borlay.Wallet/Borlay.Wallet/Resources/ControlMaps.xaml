@@ -11,15 +11,18 @@
     <DataTemplate DataType="{x:Type generalModel:ConfirmPasswordModel}">
         <generalView:ConfirmPasswordView />
     </DataTemplate>
-
     <DataTemplate DataType="{x:Type model:WalletTabsModel}">
         <view:WalletTabsView />
     </DataTemplate>
-
     <DataTemplate DataType="{x:Type model:WalletModel}">
         <view:WalletView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type model:BalanceItemModel}">
+        <view:BalanceItemView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type model:BalanceStatsModel}">
+        <view:BalanceStatsView />
+    </DataTemplate>
 
-    
 
 </ResourceDictionary>

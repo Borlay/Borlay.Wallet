@@ -12,13 +12,24 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Border Grid.Column="0">
-            <ListView Margin="0 20 20 20" Background="Transparent" BorderThickness="0" ItemsSource="{Binding MenuItems}" ItemContainerStyle="{StaticResource menuItemStyle}">
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Vertical"></StackPanel>
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-            </ListView>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                
+                <ListView Grid.Row="0" Margin="0 20 20 0" Background="Transparent" BorderThickness="0" ItemsSource="{Binding MenuItems}" ItemContainerStyle="{StaticResource menuItemStyle}">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical"></StackPanel>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
+                <Border Grid.Row="1" BorderThickness="0 1 0 0" BorderBrush="#d5d5d5" Margin="20 10 30 0" Padding="0 23 0 0">
+                    <ContentControl Content="{Binding BalanceStats}"></ContentControl>
+                </Border>
+            </Grid>
+            
         </Border>
         <Border Grid.Column="1">
             <ContentControl Content="{Binding View}"></ContentControl>

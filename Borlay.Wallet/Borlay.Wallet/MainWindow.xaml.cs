@@ -60,7 +60,7 @@ namespace Borlay.Wallet
             Header = new WalletTabsModel();
             Header.TabItems.Add(new Models.TabItem() { Name = "iota", IsSelected = true });
             Header.TabItems.Add(new Models.TabItem() { Name = "bitcoin" });
-            Header.TabItems.Add(new Models.TabItem() { Name = "very very long name" });
+            //Header.TabItems.Add(new Models.TabItem() { Name = "very very long name" });
 
             View = new WalletModel();
         }

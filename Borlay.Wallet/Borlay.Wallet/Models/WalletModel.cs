@@ -14,8 +14,12 @@ namespace Borlay.Wallet.Models
             this.MenuItems = new ObservableCollection<TabItem>();
             this.MenuItems.Add(new TabItem() { Name = "Addresses", IsSelected = true });
             this.MenuItems.Add(new TabItem() { Name = "Transactions" });
+            this.MenuItems.Add(new TabItem() { Name = "Backup" });
+
+            this.BalanceStats = new BalanceStatsModel();
         }
 
+        public BalanceStatsModel BalanceStats { get; set; }
 
         public ObservableCollection<TabItem> MenuItems { get; private set; }
     }

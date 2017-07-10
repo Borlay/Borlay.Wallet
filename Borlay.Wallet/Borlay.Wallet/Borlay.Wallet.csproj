@@ -69,11 +69,19 @@
     </ApplicationDefinition>
     <Compile Include="Extensions.cs" />
     <Compile Include="Models\ActionCommand.cs" />
+    <Compile Include="Models\BalanceStatsModel.cs" />
+    <Compile Include="Models\BalanceItemModel.cs" />
     <Compile Include="Models\General\ConfirmPasswordModel.cs" />
     <Compile Include="Models\General\IHasPassword.cs" />
     <Compile Include="Models\General\LoginModelBase.cs" />
     <Compile Include="Models\WalletModel.cs" />
     <Compile Include="Models\WalletTabsModel.cs" />
+    <Compile Include="Views\BalanceItemView.xaml.cs">
+      <DependentUpon>BalanceItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BalanceStatsView.xaml.cs">
+      <DependentUpon>BalanceStatsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\General\ConfirmPasswordView.xaml.cs">
       <DependentUpon>ConfirmPasswordView.xaml</DependentUpon>
     </Compile>
@@ -149,6 +157,14 @@
     <Page Include="Resources\TextBoxStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\BalanceItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BalanceStatsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\General\ConfirmPasswordView.xaml">
       <SubType>Designer</SubType>
