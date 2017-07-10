@@ -1,4 +1,5 @@
-﻿using Borlay.Wallet.Models.General;
+﻿using Borlay.Wallet.Models;
+using Borlay.Wallet.Models.General;
 using Borlay.Wallet.Storage;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,7 @@ namespace Borlay.Wallet
                 {
                     var account = await Login(model.UserName, model.Password);
                     // do loged stuffs
+                    View = new WalletModel();
                     return null;
                 }
                 catch (Exception e)
@@ -54,6 +56,13 @@ namespace Borlay.Wallet
             {
                 UserName = lastAccount?.UserName
             };
+
+            Header = new WalletTabsModel();
+            Header.TabItems.Add(new Models.TabItem() { Name = "iota", IsSelected = true });
+            Header.TabItems.Add(new Models.TabItem() { Name = "bitcoin" });
+            Header.TabItems.Add(new Models.TabItem() { Name = "very very long name" });
+
+            View = new WalletModel();
         }
 
         private async Task<AccountConfiguration> Login(string userName, SecureString password)
@@ -129,6 +138,20 @@ namespace Borlay.Wallet
             set
             {
                 view = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private WalletTabsModel header;
+        public WalletTabsModel Header
+        {
+            get
+            {
+                return header;
+            }
+            set
+            {
+                header = value;
                 NotifyPropertyChanged();
             }
         }

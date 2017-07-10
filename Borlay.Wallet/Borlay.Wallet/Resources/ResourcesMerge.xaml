@@ -27,5 +27,11 @@
         <ResourceDictionary 
                   Source="PasswordBoxStyle.xaml">
         </ResourceDictionary>
+        <ResourceDictionary 
+                  Source="ListViewItemStyle.xaml">
+        </ResourceDictionary>
+        <ResourceDictionary 
+                  Source="MenuItemStyle.xaml">
+        </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

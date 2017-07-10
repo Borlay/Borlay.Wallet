@@ -35,7 +35,10 @@ namespace Borlay.Wallet.Storage
         private static string GetFilePath<T>()
         {
             var path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            var filePath = Path.Combine(path, $"{typeof(T).Name}.xml");
+            var appPath = Path.Combine(path, "Borlay\\Wallet");
+            if (!Directory.Exists(appPath))
+                Directory.CreateDirectory(appPath);
+            var filePath = Path.Combine(appPath, $"{typeof(T).Name}.json");
             return filePath;
         }
     }
