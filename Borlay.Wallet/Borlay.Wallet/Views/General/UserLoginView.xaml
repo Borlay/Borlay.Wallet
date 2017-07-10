@@ -16,8 +16,8 @@
                 <TextBox Tag="yourmail@yourmail.com" Text="{Binding UserName}" Margin="10" />
                 <PasswordBox Tag="Password" Name="password" PasswordChanged="PasswordBox_PasswordChanged" Margin="10" />
                 <StackPanel Orientation="Horizontal">
-                    <Button Command="{Binding LoginCommand}" Content="Login" />
-                    <Button Style="{StaticResource grayButtonStyle}" Command="{Binding CancelCommand}" Content="Cancel" />
+                    <Button Command="{Binding LoginCommand}" Margin="10 20 10 10" Content="Login" />
+                    <Button Style="{StaticResource grayButtonStyle}" Command="{Binding CancelCommand}" Margin="10 20 10 10" Content="Cancel" />
                 </StackPanel></StackPanel>
             <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding Info}" Height="60" Margin="10 20 10 10" Foreground="#999" />
         </StackPanel>
