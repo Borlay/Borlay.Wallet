@@ -239,6 +239,8 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icons\settings-30.png" />
+    <Resource Include="Resources\Icons\settings-b-30.png" />
+    <Resource Include="Resources\Icons\settings-b-40.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
