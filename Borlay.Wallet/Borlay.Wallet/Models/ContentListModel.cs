@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace Borlay.Wallet.Models
 {
-
-    public abstract class ContentCollectionModel : ModelBase
+    public abstract class ContentListModel : ModelBase
     {
-        public ContentCollectionModel(IEnumerable<object> collection, params ButtonModel[] buttons)
+        public ContentListModel(IEnumerable<object> collection, params ButtonModel[] buttons)
         {
             this.ContentItemsSource = collection;
             this.ActionItems = new ObservableCollection<ButtonModel>(buttons);
@@ -21,15 +20,15 @@ namespace Borlay.Wallet.Models
     }
 
 
-    public class ContentCollectionModel<T> : ContentCollectionModel where T : class, new()
+    public class ContentListModel<T> : ContentListModel where T : class, new()
     {
-        public ContentCollectionModel(ObservableCollection<T> contentItems, params ButtonModel[] buttons)
+        public ContentListModel(ObservableCollection<T> contentItems, params ButtonModel[] buttons)
             : base(contentItems, buttons)
         {
             this.ContentItems = contentItems;
         }
 
-        public ContentCollectionModel(params ButtonModel[] buttons)
+        public ContentListModel(params ButtonModel[] buttons)
             : this(new ObservableCollection<T>(), buttons)
         {
         }

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Borlay.Wallet.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Height="30" Width="30" Margin="5 0">
-    <Button Command="{Binding IconClick}" Style="{StaticResource iconButtonStyle}">
-        <Image Cursor="Hand" Source="{Binding IconSource}" Width="25" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    <Button Command="{Binding ButtonClick}" Style="{StaticResource iconButtonStyle}">
+        <Image Cursor="Hand" Source="{Binding Content}" Width="25" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center"/>
     </Button>
 </UserControl>

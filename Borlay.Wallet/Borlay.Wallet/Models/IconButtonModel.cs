@@ -8,23 +8,79 @@ using System.Windows.Input;
 
 namespace Borlay.Wallet.Models
 {
-    public class IconButtonModel
+    public class ButtonModel : ModelBase
     {
-        public IconButtonModel(Func<IconButtonModel, Task> click, IconType iconType, ColorType colorType = ColorType.Gray)
-            : this(iconType, colorType)
+        private string content;
+        private ICommand buttonClick;
+
+        public ButtonModel(Func<ButtonModel, Task> click)
         {
-            this.IconClick = new ActionCommandAsync(o => click(this));
+            this.ButtonClick = new ActionCommandAsync(o => click(this));
         }
 
-        public IconButtonModel(Action<IconButtonModel> click, IconType iconType, ColorType colorType = ColorType.Gray)
-            : this(iconType, colorType)
+        public ButtonModel(Action<ButtonModel> click)
         {
-            this.IconClick = new ActionCommand(o => click(this));
+            this.ButtonClick = new ActionCommand(o => click(this));
+        }
+        public ButtonModel()
+        {
+        }
+
+        public string Content
+        {
+            get
+            {
+                return content;
+            }
+            set
+            {
+                if (this.content != value)
+                {
+                    this.content = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public ICommand ButtonClick
+        {
+            get
+            {
+                return buttonClick;
+            }
+            set
+            {
+                if (this.buttonClick != value)
+                {
+                    this.buttonClick = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+    }
+
+    public class IconButtonModel : ButtonModel
+    {
+        public IconButtonModel(Func<ButtonModel, Task> click, IconType iconType, ColorType colorType = ColorType.Gray)
+            : base(click)
+        {
+            Initialize(iconType, colorType);
+        }
+
+        public IconButtonModel(Action<ButtonModel> click, IconType iconType, ColorType colorType = ColorType.Gray)
+            : base(click)
+        {
+            Initialize(iconType, colorType);
         }
 
         public IconButtonModel(IconType iconType, ColorType colorType = ColorType.Gray)
         {
-            IconSource = GetIconPath(iconType, colorType); // "../Resources/Icons/restart-40.png";
+            Initialize(iconType, colorType);
+        }
+
+        private void Initialize(IconType iconType, ColorType colorType)
+        {
+            Content = GetIconPath(iconType, colorType);
         }
 
         private string GetIconPath(IconType iconType, ColorType colorType)
@@ -40,10 +96,6 @@ namespace Borlay.Wallet.Models
             var iconPath = Path.Combine(path, iconName);
             return iconPath;
         }
-
-        public string IconSource { get; set; }
-
-        public ICommand IconClick { get; set; }
     }
 
     public enum ColorType

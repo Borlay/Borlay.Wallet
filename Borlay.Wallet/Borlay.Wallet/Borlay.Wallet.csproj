@@ -77,6 +77,7 @@
     <Compile Include="Models\BundleItemModel.cs" />
     <Compile Include="Models\BundlesModel.cs" />
     <Compile Include="Models\ContentCollectionModel.cs" />
+    <Compile Include="Models\ContentListModel.cs" />
     <Compile Include="Models\PrefixDecimalConverter.cs" />
     <Compile Include="Models\CollectionModel.cs" />
     <Compile Include="Models\General\ConfirmPasswordModel.cs" />
@@ -111,6 +112,9 @@
     </Compile>
     <Compile Include="Views\ContentCollectionView.xaml.cs">
       <DependentUpon>ContentCollectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ContentListView.xaml.cs">
+      <DependentUpon>ContentListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\General\ConfirmPasswordView.xaml.cs">
       <DependentUpon>ConfirmPasswordView.xaml</DependentUpon>
@@ -148,6 +152,10 @@
     <Page Include="Resources\Brushes.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\BundleListViewItemStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\ButtonStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -234,6 +242,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ContentCollectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ContentListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

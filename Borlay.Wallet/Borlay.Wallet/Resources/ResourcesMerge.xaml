@@ -31,6 +31,9 @@
                   Source="ListViewItemStyle.xaml">
         </ResourceDictionary>
         <ResourceDictionary 
+                  Source="BundleListViewItemStyle.xaml">
+        </ResourceDictionary>
+        <ResourceDictionary 
                   Source="MenuItemStyle.xaml">
         </ResourceDictionary>
         <ResourceDictionary 

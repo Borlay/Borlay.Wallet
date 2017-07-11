@@ -16,15 +16,13 @@ using System.Windows.Shapes;
 namespace Borlay.Wallet.Views
 {
     /// <summary>
-    /// Interaction logic for BundleItemView.xaml
+    /// Interaction logic for ContentListView.xaml
     /// </summary>
-    public partial class BundleItemView : UserControl
+    public partial class ContentListView : UserControl
     {
-        public BundleItemView()
+        public ContentListView()
         {
             InitializeComponent();
-
-            
         }
     }
 }

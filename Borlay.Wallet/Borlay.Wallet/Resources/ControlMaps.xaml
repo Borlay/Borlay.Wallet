@@ -53,5 +53,9 @@
     <DataTemplate DataType="{x:Type model:ContentCollectionModel}">
         <view:ContentCollectionView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type model:ContentListModel}">
+        <view:ContentListView />
+    </DataTemplate>
     
+
 </ResourceDictionary>
