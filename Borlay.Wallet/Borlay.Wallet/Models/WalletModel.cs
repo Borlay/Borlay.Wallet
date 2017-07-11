@@ -20,7 +20,9 @@ namespace Borlay.Wallet.Models
                     var collectionModel = new CollectionModel<AddressItemModel>();
                     for (int i = 0; i < 30; i++)
                     {
-                        collectionModel.Collection.Add(new AddressItemModel() { Address = "asdfasdfasdfa", Balance = 1000000 });
+                        collectionModel.Collection.Add(new AddressItemModel() { Address = "asdfasdfasdfa", Balance = 1234567 });
+                        collectionModel.Collection.Add(new AddressItemModel() { Address = "asdfasdfasdfa", Balance = 1234967 });
+                        collectionModel.Collection.Add(new AddressItemModel() { Address = "asdfasdfasdfa", Balance = 1000 });
                         collectionModel.Collection.Add(new AddressItemModel() { Address = "bakljsdlfjasdf", Balance = 3000000 });
                     }
 

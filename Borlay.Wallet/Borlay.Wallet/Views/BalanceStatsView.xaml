@@ -9,11 +9,6 @@
     <Border>
         <StackPanel>
             <ItemsControl ItemsSource="{Binding Balances}">
-                <!--<ItemsControl.Template>
-                    <ControlTemplate>
-                        <Button Content="{Binding ItemName}"/>
-                    </ControlTemplate>
-                </ItemsControl.Template>-->
             </ItemsControl>
         </StackPanel>
     </Border>

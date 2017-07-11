@@ -36,5 +36,8 @@
         <ResourceDictionary 
                   Source="IconButtonStyle.xaml">
         </ResourceDictionary>
+        <ResourceDictionary 
+                  Source="ValueConverters.xaml">
+        </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

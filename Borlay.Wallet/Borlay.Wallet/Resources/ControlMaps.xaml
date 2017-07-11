@@ -23,20 +23,24 @@
     <DataTemplate DataType="{x:Type model:BalanceStatsModel}">
         <view:BalanceStatsView />
     </DataTemplate>
-
     <DataTemplate DataType="{x:Type model:CollectionModel}">
         <view:CollectionView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type model:AddressItemModel}">
         <view:AddressItemView />
     </DataTemplate>
-
     <DataTemplate DataType="{x:Type model:AddressesModel}">
         <view:AddressesView />
     </DataTemplate>
-
     <DataTemplate DataType="{x:Type model:IconButtonModel}">
         <view:IconButtonView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type model:TransactionsModel}">
+        <view:TransactionsView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type model:TransactionItemModel}">
+        <view:TransactionItemView />
+    </DataTemplate>
+    
 </ResourceDictionary>

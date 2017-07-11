@@ -15,7 +15,7 @@
             <TextBlock Foreground="#777" FontSize="14" Text="{Binding Currency}" />
         </Border>
         <Border Grid.Column="1">
-            <TextBlock Foreground="#333" FontSize="14" Text="{Binding Value}" />
+            <TextBlock Foreground="#333" FontSize="14" Text="{Binding Path=Value, Converter={StaticResource prefixDecimalConverter}}" />
         </Border>
     </Grid>
 </UserControl>

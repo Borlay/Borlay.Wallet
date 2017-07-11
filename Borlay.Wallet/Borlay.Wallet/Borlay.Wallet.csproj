@@ -68,16 +68,20 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Extensions.cs" />
+    <Compile Include="Iota\IotaWalletProvider.cs" />
     <Compile Include="Models\ActionCommand.cs" />
     <Compile Include="Models\AddressesModel.cs" />
     <Compile Include="Models\AddressItemModel.cs" />
     <Compile Include="Models\BalanceStatsModel.cs" />
     <Compile Include="Models\BalanceItemModel.cs" />
+    <Compile Include="Models\PrefixDecimalConverter.cs" />
     <Compile Include="Models\CollectionModel.cs" />
     <Compile Include="Models\General\ConfirmPasswordModel.cs" />
     <Compile Include="Models\General\IHasPassword.cs" />
     <Compile Include="Models\General\LoginModelBase.cs" />
     <Compile Include="Models\IconButtonModel.cs" />
+    <Compile Include="Models\TransactionItemModel.cs" />
+    <Compile Include="Models\TransactionsModel.cs" />
     <Compile Include="Models\WalletModel.cs" />
     <Compile Include="Models\WalletTabsModel.cs" />
     <Compile Include="Views\AddressesView.xaml.cs">
@@ -103,6 +107,12 @@
     </Compile>
     <Compile Include="Views\IconButtonView.xaml.cs">
       <DependentUpon>IconButtonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TransactionItemView.xaml.cs">
+      <DependentUpon>TransactionItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TransactionsView.xaml.cs">
+      <DependentUpon>TransactionsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WalletTabsView.xaml.cs">
       <DependentUpon>WalletTabsView.xaml</DependentUpon>
@@ -178,6 +188,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Resources\ValueConverters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AddressesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -207,6 +221,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\IconButtonView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TransactionItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TransactionsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
