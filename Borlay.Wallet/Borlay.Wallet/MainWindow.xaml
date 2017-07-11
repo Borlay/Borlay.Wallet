@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Borlay.Wallet"
         mc:Ignorable="d"
         FontFamily="#Roboto,RobotoDraft,Helvetica,Arial,sans-serif"
-        Title="Borlay wallet" UseLayoutRounding="True" WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True" Height="700" Width="1000" >
+        Title="Borlay wallet" UseLayoutRounding="True" WindowStartupLocation="CenterScreen" SnapsToDevicePixels="True" Height="700" Width="1000" MaxWidth="1200" >
     <Grid Background="#f2f2f2">
         <Grid.RowDefinitions>
             <RowDefinition Height="70" />

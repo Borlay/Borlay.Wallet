@@ -69,24 +69,40 @@
     </ApplicationDefinition>
     <Compile Include="Extensions.cs" />
     <Compile Include="Models\ActionCommand.cs" />
+    <Compile Include="Models\AddressesModel.cs" />
+    <Compile Include="Models\AddressItemModel.cs" />
     <Compile Include="Models\BalanceStatsModel.cs" />
     <Compile Include="Models\BalanceItemModel.cs" />
+    <Compile Include="Models\CollectionModel.cs" />
     <Compile Include="Models\General\ConfirmPasswordModel.cs" />
     <Compile Include="Models\General\IHasPassword.cs" />
     <Compile Include="Models\General\LoginModelBase.cs" />
+    <Compile Include="Models\IconButtonModel.cs" />
     <Compile Include="Models\WalletModel.cs" />
     <Compile Include="Models\WalletTabsModel.cs" />
+    <Compile Include="Views\AddressesView.xaml.cs">
+      <DependentUpon>AddressesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddressItemView.xaml.cs">
+      <DependentUpon>AddressItemView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BalanceItemView.xaml.cs">
       <DependentUpon>BalanceItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\BalanceStatsView.xaml.cs">
       <DependentUpon>BalanceStatsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\CollectionView.xaml.cs">
+      <DependentUpon>CollectionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\General\ConfirmPasswordView.xaml.cs">
       <DependentUpon>ConfirmPasswordView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\General\UserLoginView.xaml.cs">
       <DependentUpon>UserLoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\IconButtonView.xaml.cs">
+      <DependentUpon>IconButtonView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WalletTabsView.xaml.cs">
       <DependentUpon>WalletTabsView.xaml</DependentUpon>
@@ -121,6 +137,10 @@
     <Page Include="Resources\ErrorTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\IconButtonStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\ListItemStyle.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -158,6 +178,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\AddressesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddressItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\BalanceItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -166,11 +194,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\CollectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\General\ConfirmPasswordView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\General\UserLoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\IconButtonView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -241,6 +277,17 @@
     <Resource Include="Resources\Icons\settings-30.png" />
     <Resource Include="Resources\Icons\settings-b-30.png" />
     <Resource Include="Resources\Icons\settings-b-40.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\checkmark-40.png" />
+    <Resource Include="Resources\Icons\checkmark-g-40.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\restart-40.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\minus-40.png" />
+    <Resource Include="Resources\Icons\plus-40.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -22,6 +22,17 @@ namespace Borlay.Wallet.Models
         private string name;
         private bool isSelected;
 
+        public TabItem(Action<TabItem> selected)
+        {
+            this.Selected = selected;
+        }
+
+        public TabItem()
+        {
+        }
+
+        public Action<TabItem> Selected { get; set; }
+
         public string Name
         {
             get
@@ -49,6 +60,8 @@ namespace Borlay.Wallet.Models
                 if (this.isSelected != value)
                 {
                     this.isSelected = value;
+                    if (value)
+                        Selected?.Invoke(this);
                     NotifyPropertyChanged();
                 }
             }

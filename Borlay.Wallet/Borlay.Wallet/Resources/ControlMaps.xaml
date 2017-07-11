@@ -24,5 +24,19 @@
         <view:BalanceStatsView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type model:CollectionModel}">
+        <view:CollectionView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type model:AddressItemModel}">
+        <view:AddressItemView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type model:AddressesModel}">
+        <view:AddressesView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type model:IconButtonModel}">
+        <view:IconButtonView />
+    </DataTemplate>
 
 </ResourceDictionary>

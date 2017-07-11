@@ -33,5 +33,8 @@
         <ResourceDictionary 
                   Source="MenuItemStyle.xaml">
         </ResourceDictionary>
+        <ResourceDictionary 
+                  Source="IconButtonStyle.xaml">
+        </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

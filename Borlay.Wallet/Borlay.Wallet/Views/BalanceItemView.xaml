@@ -12,10 +12,10 @@
             <ColumnDefinition Width="80" />
         </Grid.ColumnDefinitions>
         <Border>
-            <TextBlock Foreground="#777" FontSize="13" Text="{Binding Currency}" />
+            <TextBlock Foreground="#777" FontSize="14" Text="{Binding Currency}" />
         </Border>
         <Border Grid.Column="1">
-            <TextBlock Foreground="#333" FontSize="13" Text="{Binding Value}" />
+            <TextBlock Foreground="#333" FontSize="14" Text="{Binding Value}" />
         </Border>
     </Grid>
 </UserControl>
