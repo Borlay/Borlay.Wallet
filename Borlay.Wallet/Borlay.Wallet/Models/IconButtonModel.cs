@@ -11,7 +11,7 @@ namespace Borlay.Wallet.Models
     public class ButtonModel : ModelBase
     {
         private string content;
-        private ICommand buttonClick;
+        private IActionCommand buttonClick;
 
         public ButtonModel(Func<ButtonModel, Task> click)
         {
@@ -42,7 +42,7 @@ namespace Borlay.Wallet.Models
             }
         }
 
-        public ICommand ButtonClick
+        public IActionCommand ButtonClick
         {
             get
             {

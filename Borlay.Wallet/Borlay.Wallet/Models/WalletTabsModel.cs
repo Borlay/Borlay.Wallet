@@ -17,8 +17,15 @@ namespace Borlay.Wallet.Models
         public ObservableCollection<TabItem> TabItems { get; private set; }
     }
 
-    public class TabItem : ModelBase
+    public interface ISelectedChanged
     {
+        event Action<object, bool> SelectedChanged;
+    }
+
+    public class TabItem : ModelBase, ISelectedChanged
+    {
+        public event Action<object, bool> SelectedChanged = (o, a) => { };
+
         private string name;
         private bool isSelected;
 
@@ -63,6 +70,8 @@ namespace Borlay.Wallet.Models
                     if (value)
                         Selected?.Invoke(this);
                     NotifyPropertyChanged();
+
+                    SelectedChanged(this, value);
                 }
             }
         }

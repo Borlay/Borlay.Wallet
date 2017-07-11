@@ -35,8 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Borlay.Iota.Library, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Borlay.Iota.Library.1.0.4\lib\netstandard1.1\Borlay.Iota.Library.dll</HintPath>
+    <Reference Include="Borlay.Iota.Library, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Borlay.Iota.Library.1.0.6\lib\netstandard1.1\Borlay.Iota.Library.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -70,6 +70,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Iota\IotaWalletProvider.cs" />
     <Compile Include="Models\ActionCommand.cs" />
+    <Compile Include="Models\ActionCommandGroup.cs" />
     <Compile Include="Models\AddressesModel.cs" />
     <Compile Include="Models\AddressItemModel.cs" />
     <Compile Include="Models\BalanceStatsModel.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Models\BundlesModel.cs" />
     <Compile Include="Models\ContentCollectionModel.cs" />
     <Compile Include="Models\ContentListModel.cs" />
+    <Compile Include="Models\ModelBindExtensions.cs" />
     <Compile Include="Models\PrefixDecimalConverter.cs" />
     <Compile Include="Models\CollectionModel.cs" />
     <Compile Include="Models\General\ConfirmPasswordModel.cs" />

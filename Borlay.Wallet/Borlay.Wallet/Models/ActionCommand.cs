@@ -7,9 +7,10 @@ using System.Windows.Input;
 
 namespace Borlay.Wallet.Models
 {
-    public class ActionCommand : ICommand
+    public class ActionCommand : IActionCommand
     {
         public event EventHandler CanExecuteChanged = (s, a) => { };
+        public event Action<IActionCommand, bool> ExecutingChanged = (s, a) => { };
 
         private readonly Action<object> action;
         private bool canExecute = true;
@@ -28,9 +29,11 @@ namespace Borlay.Wallet.Models
             return canExecute;
         }
 
-        public async void Execute(object parameter)
+        public void Execute(object parameter)
         {
+            ExecutingChanged(this, true);
             action(parameter);
+            ExecutingChanged(this, false);
         }
 
         public void SetCanExecute(bool canExecute)

@@ -44,8 +44,7 @@ namespace Borlay.Wallet
                 try
                 {
                     var account = await Login(model.UserName, model.Password);
-                    // do loged stuffs
-                    View = new WalletModel();
+                    await Loged(account);
                     return null;
                 }
                 catch (Exception e)
@@ -58,12 +57,48 @@ namespace Borlay.Wallet
             };
 
             Header = new WalletTabsModel();
-            Header.TabItems.Add(new Models.TabItem() { Name = "iota", IsSelected = true });
-            Header.TabItems.Add(new Models.TabItem() { Name = "bitcoin" });
+            //Header.TabItems.Add(new Models.TabItem() { Name = "iota", IsSelected = true });
+            //Header.TabItems.Add(new Models.TabItem() { Name = "bitcoin" });
             //Header.TabItems.Add(new Models.TabItem() { Name = "very very long name" });
 
-            View = new WalletModel();
+            //View = new WalletModel();
         }
+
+        private async Task Loged(AccountConfiguration account)
+        {
+            Header.TabItems.Clear();
+
+            foreach(var wallet in account.Wallets)
+            {
+                if (wallet.IsActive)
+                {
+                    var tabItem = new Models.TabItem()
+                    {
+                        Name = wallet.Name,
+                        IsSelected = false,
+                    };
+                    var walletProvider = new Iota.IotaWalletProvider(wallet, tabItem);
+                    tabItem.Selected = (t) => View = walletProvider.Wallet;
+                    Header.TabItems.Add(tabItem);
+                }
+            }
+            var tab = Header.TabItems.FirstOrDefault();
+            if (tab != null)
+                tab.IsSelected = true;
+            else
+                View = null;
+        }
+
+        //private async Task CreateNewIotaWallet(AccountConfiguration account)
+        //{
+        //    var walletList = account.Wallets?.ToList() ?? new List<WalletConfiguration>();
+
+        //    // create new wallet
+            
+
+        //    account.Wallets = walletList.ToArray();
+        //    storageManager.SaveAccount()
+        //}
 
         private async Task<AccountConfiguration> Login(string userName, SecureString password)
         {
@@ -100,14 +135,13 @@ namespace Borlay.Wallet
 
                     var account = storageManager.CreateAccount(userName, passwordHash);
 
-                    // create new wallet
                     account.Wallets = new WalletConfiguration[]
                     {
                         new WalletConfiguration()
                         {
                             PrivateKey = Borlay.Iota.Library.Utils.IotaApiUtils.GenerateRandomTrytes(),
                             WalletType = WalletType.Iota,
-                            Name = "Iota"
+                            Name = WalletType.Iota.ToString()
                         }
                     };
 

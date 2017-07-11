@@ -16,5 +16,7 @@ namespace Borlay.Wallet.Models
         {
             PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public object Tag { get; set; }
     }
 }

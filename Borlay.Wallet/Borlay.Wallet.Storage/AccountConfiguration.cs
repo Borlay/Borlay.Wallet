@@ -51,6 +51,10 @@ namespace Borlay.Wallet.Storage
 
         public bool IsActive { get; set; }
 
+        public bool IsImported { get; set; }
+
+        public bool HasUnsortedAddresses { get; set; }
+
         public EncryptionType EncryptionType { get; set; }
 
         public DateTime CreationDate { get; set; }

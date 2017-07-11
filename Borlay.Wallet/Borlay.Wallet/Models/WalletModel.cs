@@ -10,6 +10,11 @@ namespace Borlay.Wallet.Models
     public class WalletModel : ModelBase
     {
         public WalletModel(params TabItem[] menuItems)
+            : this(new BalanceStatsModel(), menuItems)
+        {
+        }
+
+        public WalletModel(BalanceStatsModel balanceStatsModel, params TabItem[] menuItems)
         {
             this.MenuItems = new ObservableCollection<TabItem>();
             this.BalanceStats = new BalanceStatsModel();
@@ -17,7 +22,7 @@ namespace Borlay.Wallet.Models
             foreach (var item in menuItems)
                 this.MenuItems.Add(item);
 
-            if(menuItems == null || menuItems.Length == 0) // initialize test environment
+            if (menuItems == null || menuItems.Length == 0) // initialize test environment
                 InitializeMenu();
         }
 

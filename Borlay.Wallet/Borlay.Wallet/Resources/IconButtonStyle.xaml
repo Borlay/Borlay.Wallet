@@ -31,7 +31,11 @@
                             <Setter Property="Foreground" Value="White" />
                             <Setter Property="Cursor" Value="Hand" />
                         </Trigger>
-
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="bd" Property="Background" Value="#dadada"/>
+                            <Setter Property="Foreground" Value="White" />
+                            <Setter Property="Cursor" Value="Wait" />
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
