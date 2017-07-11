@@ -17,19 +17,28 @@ namespace Borlay.Wallet.Models
                 Name = "Addresses",
                 Selected = (t) =>
                 {
-                    var collectionModel = new CollectionModel<AddressItemModel>();
+                    //var collectionModel = new CollectionModel<AddressItemModel>();
+                    //for (int i = 0; i < 30; i++)
+                    //{
+                    //    collectionModel.Collection.Add(new AddressItemModel() { Address = "asdfasdfasdfa", Balance = 1234567 });
+                    //    collectionModel.Collection.Add(new AddressItemModel() { Address = "asdfasdfasdfa", Balance = 1234967 });
+                    //    collectionModel.Collection.Add(new AddressItemModel() { Address = "asdfasdfasdfa", Balance = 1000 });
+                    //    collectionModel.Collection.Add(new AddressItemModel() { Address = "bakljsdlfjasdf", Balance = 3000000 });
+                    //}
+
+                    //this.ActionItems.Add(new IconButtonModel(IconType.Restart));
+                    //this.ActionItems.Add(new IconButtonModel(IconType.Plus));
+
+                    var addressesView = new ContentCollectionModel<AddressItemModel>(
+                        new IconButtonModel(IconType.Restart),
+                        new IconButtonModel(IconType.Plus));
                     for (int i = 0; i < 30; i++)
                     {
-                        collectionModel.Collection.Add(new AddressItemModel() { Address = "asdfasdfasdfa", Balance = 1234567 });
-                        collectionModel.Collection.Add(new AddressItemModel() { Address = "asdfasdfasdfa", Balance = 1234967 });
-                        collectionModel.Collection.Add(new AddressItemModel() { Address = "asdfasdfasdfa", Balance = 1000 });
-                        collectionModel.Collection.Add(new AddressItemModel() { Address = "bakljsdlfjasdf", Balance = 3000000 });
+                        addressesView.ContentItems.Add(new AddressItemModel() { Address = "asdfasdfasdfa", Balance = 1234567 });
+                        addressesView.ContentItems.Add(new AddressItemModel() { Address = "asdfasdfasdfa", Balance = 1234967 });
+                        addressesView.ContentItems.Add(new AddressItemModel() { Address = "asdfasdfasdfa", Balance = 1000 });
+                        addressesView.ContentItems.Add(new AddressItemModel() { Address = "bakljsdlfjasdf", Balance = 3000000 });
                     }
-
-                    var addressesView = new AddressesModel()
-                    {
-                        AddressItems = collectionModel
-                    };
 
                     View = addressesView;
                 },

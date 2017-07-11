@@ -10,11 +10,6 @@
         <ScrollViewer VerticalScrollBarVisibility="Visible">
             <StackPanel Orientation="Vertical">
                 <ItemsControl ItemsSource="{Binding CollectionSource}">
-                    <!--<ItemsControl.Template>
-                    <ControlTemplate>
-                        <Button Content="{Binding ItemName}"/>
-                    </ControlTemplate>
-                </ItemsControl.Template>-->
                 </ItemsControl>
             </StackPanel>
         </ScrollViewer>

@@ -42,5 +42,16 @@
     <DataTemplate DataType="{x:Type model:TransactionItemModel}">
         <view:TransactionItemView />
     </DataTemplate>
+
+    <DataTemplate DataType="{x:Type model:BundlesModel}">
+        <view:BundlesView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type model:BundleItemModel}">
+        <view:BundleItemView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type model:ContentCollectionModel}">
+        <view:ContentCollectionView />
+    </DataTemplate>
     
 </ResourceDictionary>

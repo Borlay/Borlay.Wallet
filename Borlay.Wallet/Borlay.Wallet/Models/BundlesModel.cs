@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Borlay.Wallet.Models
 {
-    public class TransactionItemModel : TransactionItemBaseModel
+    class BundlesModel
     {
     }
 }
