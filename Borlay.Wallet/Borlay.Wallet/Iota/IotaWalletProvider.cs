@@ -205,7 +205,16 @@ namespace Borlay.Wallet.Iota
             var addressItemModel = new AddressItemModel() { Tag = addressItem };
             addressItem.BindTo(addressItemModel, d => d.Address, m => m.Address);
             addressItem.BindTo(addressItemModel, d => d.Balance, m => m.Balance);
+            addressItem.Changed(a => a.Balance, (a, v) => RefreshBalanceStats());
             return addressItemModel;
+        }
+
+        private void RefreshBalanceStats()
+        {
+            var addresses = GetKnowAddresses();
+            var iotaBalance = addresses.Sum(a => a.Balance);
+            var balance = walletModel.BalanceStats.Balances.FirstOrDefault(b => b.WalletType == WalletType.Iota);
+            balance.Value = iotaBalance;
         }
 
         private IotaApi CreateIotaClient()

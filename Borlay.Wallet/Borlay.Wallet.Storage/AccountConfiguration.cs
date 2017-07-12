@@ -72,6 +72,9 @@ namespace Borlay.Wallet.Storage
 
     public enum WalletType
     {
-        Iota = 1
+        Iota = 1,
+        Bitcoin,
+        Eth,
+        Eur
     }
 }

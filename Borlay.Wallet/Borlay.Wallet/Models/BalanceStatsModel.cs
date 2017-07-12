@@ -15,8 +15,8 @@ namespace Borlay.Wallet.Models
 
             if (balanceItems.Length == 0) // initialize test environment
             {
-                this.Balances.Add(new BalanceItemModel() { Currency = "Eur", Value = 3.45m });
-                this.Balances.Add(new BalanceItemModel() { Currency = "Iota", Value = 10000000 });
+                this.Balances.Add(new BalanceItemModel(Storage.WalletType.Iota) { Value = 0 });
+                this.Balances.Add(new BalanceItemModel(Storage.WalletType.Bitcoin) { Value = 123456789 });
             }
         }
 

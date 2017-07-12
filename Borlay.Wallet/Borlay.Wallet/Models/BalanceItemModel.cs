@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Borlay.Wallet.Storage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,14 @@ namespace Borlay.Wallet.Models
         private decimal value;
         private decimal rate;
         private bool current;
+
+        public BalanceItemModel(WalletType walletType)
+        {
+            this.WalletType = walletType;
+            this.Currency = walletType.ToString();
+        }
+
+        public WalletType WalletType { get; set; }
 
         public string Currency
         {

@@ -88,6 +88,7 @@
     <Compile Include="Models\General\IHasPassword.cs" />
     <Compile Include="Models\General\LoginModelBase.cs" />
     <Compile Include="Models\IconButtonModel.cs" />
+    <Compile Include="Models\ScanAddressesModel.cs" />
     <Compile Include="Models\SyncModel.cs" />
     <Compile Include="Models\TransactionItemBaseModel.cs" />
     <Compile Include="Models\TransactionItemModel.cs" />
@@ -138,6 +139,9 @@
     </Compile>
     <Compile Include="Views\IconButtonView.xaml.cs">
       <DependentUpon>IconButtonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScanAddressesView.xaml.cs">
+      <DependentUpon>ScanAddressesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SyncView.xaml.cs">
       <DependentUpon>SyncView.xaml</DependentUpon>
@@ -291,6 +295,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\IconButtonView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScanAddressesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
