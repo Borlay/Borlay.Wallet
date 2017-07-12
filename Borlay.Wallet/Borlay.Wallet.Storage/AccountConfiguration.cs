@@ -9,7 +9,7 @@ namespace Borlay.Wallet.Storage
 {
     public class AccountConfiguration
     {
-        public Guid UserGuid { get; set; }
+        public string AccountId { get; set; }
 
         public string UserName { get; set; }
 
@@ -28,10 +28,13 @@ namespace Borlay.Wallet.Storage
 
         public WalletConfiguration()
         {
+            this.WalletId = Guid.NewGuid().ToString();
             this.CreationDate = DateTime.Now;
             this.EncryptionType = EncryptionType.None;
             this.IsActive = true;
         }
+
+        public string WalletId { get; set; }
 
         public string PrivateKey
         {
@@ -41,7 +44,7 @@ namespace Borlay.Wallet.Storage
             }
             set
             {
-                securePrivateKey = SecureExtensions.ConvertToSecureString(value);
+                securePrivateKey = SecureExtensions.GetSecureString(value);
             }
         }
 

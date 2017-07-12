@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="Borlay.Wallet.Views.CreateWalletView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Borlay.Wallet.Views"
+             mc:Ignorable="d" 
+              d:DesignWidth="300" Height="Auto" Width="640">
+    <Border Style="{StaticResource contentBorderStyle}" Padding="20" Width="640">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <Border  Grid.Row="0" Margin="20 10" VerticalAlignment="Bottom" >
+                <TextBlock FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center">Name</TextBlock>
+            </Border>
+            <Border Grid.Row="1" Margin="20 0"  VerticalAlignment="Top">
+                <TextBox Text="{Binding Name}" Foreground="#333" FontSize="12" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding CreateClick}" />
+                    </TextBox.InputBindings>
+                </TextBox>
+            </Border>
+            <Border  Grid.Row="2" Margin="20 10" VerticalAlignment="Bottom" >
+                <TextBlock FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center">Wallet key</TextBlock>
+            </Border>
+            <Border Grid.Row="3" Margin="20 0"  VerticalAlignment="Top">
+                <TextBox Text="{Binding WalletKey}" Foreground="#333" FontSize="12" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding CreateClick}" />
+                    </TextBox.InputBindings>
+                </TextBox>
+            </Border>
+            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Command="{Binding CreateClick}" Margin="10 0" HorizontalAlignment="Center">Create</Button>
+                <Button Command="{Binding CancelClick}" Margin="10 0" Style="{StaticResource grayButtonStyle}">Cancel</Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

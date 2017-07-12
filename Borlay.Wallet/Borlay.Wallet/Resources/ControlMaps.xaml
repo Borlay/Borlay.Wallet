@@ -56,6 +56,19 @@
     <DataTemplate DataType="{x:Type model:ContentListModel}">
         <view:ContentListView />
     </DataTemplate>
-    
+
+    <DataTemplate DataType="{x:Type model:CreateWalletModel}">
+        <view:CreateWalletView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type model:SyncModel}">
+        <view:SyncView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type model:DefaultSyncModel}">
+        <view:DefaultSyncView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type model:CancelSyncModel}">
+        <view:CancelSyncView />
+    </DataTemplate>
 
 </ResourceDictionary>

@@ -19,6 +19,8 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="50" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="200" />
                 </Grid.ColumnDefinitions>
@@ -26,10 +28,13 @@
                     <Button Content="Shop" Width="80" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10 10" />
                 </Border>-->
                 <Border Grid.Column="1">
-                    <ContentControl Margin="0 23 10 0" Content="{Binding Header}"></ContentControl>
+                    <ContentControl Margin="0 23 0 0" Content="{Binding Header}"></ContentControl>
                 </Border>
-                <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                    
+                <Border Grid.Column="2">
+                    <ContentControl Margin="0 23 10 0" Content="{Binding CreateWalletButton}"></ContentControl>
+                </Border>
+                <StackPanel Grid.Column="4" Orientation="Horizontal" HorizontalAlignment="Right">
+
                     <Button Content="Donate" Width="80" Style="{StaticResource grayButtonStyle}" Margin="0 0 0 0" />
                     <!-- icon color aaa -->
                     <Image Cursor="Hand" Source="Resources/Icons/settings-40.png" Width="25" Height="25" Margin="20 0"/>
@@ -38,6 +43,9 @@
         </Border>
         <Border Grid.Row="1">
             <ContentControl Content="{Binding View}"></ContentControl>
+        </Border>
+        <Border Grid.Row="1">
+            <ContentControl Content="{Binding SyncView}"></ContentControl>
         </Border>
     </Grid>
 </Window>

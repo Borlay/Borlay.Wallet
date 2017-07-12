@@ -24,16 +24,18 @@ namespace Borlay.Wallet
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : Window, INotifyPropertyChanged, ISyncView
     {
         private readonly AccountStorageManager storageManager = new AccountStorageManager();
+        private readonly SyncModel syncModel;
+        
 
         public MainWindow()
         {
             InitializeComponent();
 
             this.DataContext = this;
-
+            this.syncModel = new SyncModel(this);
             // to remember ListCollectionView
 
             var accounts = storageManager.GetAccounts();
@@ -45,6 +47,9 @@ namespace Borlay.Wallet
                 {
                     var account = await Login(model.UserName, model.Password);
                     await Loged(account);
+
+                    this.CreateWalletButton = new IconButtonModel((b) => CreateWalletAsync(model), IconType.Plus);
+
                     return null;
                 }
                 catch (Exception e)
@@ -57,11 +62,74 @@ namespace Borlay.Wallet
             };
 
             Header = new WalletTabsModel();
-            //Header.TabItems.Add(new Models.TabItem() { Name = "iota", IsSelected = true });
-            //Header.TabItems.Add(new Models.TabItem() { Name = "bitcoin" });
-            //Header.TabItems.Add(new Models.TabItem() { Name = "very very long name" });
+        }
 
-            //View = new WalletModel();
+        private async Task CreateWalletAsync(IUserNameCredentials credentials)
+        {
+            var oldView = this.View;
+
+            var createWalletModel = new CreateWalletModel();
+            this.View = createWalletModel;
+
+            try
+            {
+                var wallet = await createWalletModel.CreateWallet();
+                var syncContent = await syncModel.EnterSync();
+                try
+                {
+                    syncContent.SetTextView("Your wallet is about to ready. We are creating the first address for you.");
+
+                    var tabItem = new Models.TabItem()
+                    {
+                        Name = wallet.Name,
+                        IsSelected = false,
+                    };
+                    var walletProvider = new Iota.IotaWalletProvider(wallet, tabItem);
+
+                    await walletProvider.EnsureFirstAddressAsync();
+
+                    if (wallet.IsImported)
+                    {
+                        var cancelSync = syncContent
+                            .SetCancelView("Since you are creating your wallet with an existing key we area searching for addresses. You can cancel if you know that there is no addresses.");
+                        try
+                        {
+                            await walletProvider.InitializeAsync(cancelSync.Token, true);
+                        }
+                        catch(OperationCanceledException)
+                        {
+                            // do nothing
+                        }
+                    }
+
+                    //storageManager.SaveAccount
+
+                    tabItem.Selected = (t) => View = walletProvider.Wallet;
+                    Header.TabItems.Add(tabItem);
+                    foreach (var tab in Header.TabItems) // don't know why but need
+                        tab.IsSelected = false;
+                    tabItem.IsSelected = true;
+                    return;
+                }
+                catch(OperationCanceledException)
+                {
+                    // do nothing
+                }
+                catch(Exception e)
+                {
+                    await syncContent.SetCancelView(e.Message).WaitAsync();
+                }
+                finally
+                {
+                    syncContent.Dispose();
+                }
+                
+            }
+            catch (OperationCanceledException)
+            {
+                // do nothing
+            }
+            this.View = oldView;
         }
 
         private async Task Loged(AccountConfiguration account)
@@ -88,17 +156,6 @@ namespace Borlay.Wallet
             else
                 View = null;
         }
-
-        //private async Task CreateNewIotaWallet(AccountConfiguration account)
-        //{
-        //    var walletList = account.Wallets?.ToList() ?? new List<WalletConfiguration>();
-
-        //    // create new wallet
-            
-
-        //    account.Wallets = walletList.ToArray();
-        //    storageManager.SaveAccount()
-        //}
 
         private async Task<AccountConfiguration> Login(string userName, SecureString password)
         {
@@ -162,8 +219,8 @@ namespace Borlay.Wallet
             return tcs.Task;
         }
 
-        private INotifyPropertyChanged view;
-        public INotifyPropertyChanged View
+        private object view;
+        public object View
         {
             get
             {
@@ -172,6 +229,20 @@ namespace Borlay.Wallet
             set
             {
                 view = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private object syncView;
+        public object SyncView
+        {
+            get
+            {
+                return syncView;
+            }
+            set
+            {
+                syncView = value;
                 NotifyPropertyChanged();
             }
         }
@@ -190,6 +261,19 @@ namespace Borlay.Wallet
             }
         }
 
+        private IconButtonModel createWalletButton;
+        public IconButtonModel CreateWalletButton
+        {
+            get
+            {
+                return createWalletButton;
+            }
+            set
+            {
+                createWalletButton = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged = (s, e) => { };
 

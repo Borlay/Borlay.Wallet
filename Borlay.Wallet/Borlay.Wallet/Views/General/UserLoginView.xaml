@@ -6,15 +6,20 @@
              xmlns:local="clr-namespace:Borlay.Wallet.Views.General"
              mc:Ignorable="d"  SnapsToDevicePixels="True"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Border Height="350" Width="480" Background="#fff" CornerRadius="3" BorderBrush="#ccc" BorderThickness="1">
-        <Border.BitmapEffect>
-            <DropShadowBitmapEffect ShadowDepth="3" Color="#ccc" />
-        </Border.BitmapEffect>
+    <Border Height="350" Width="480" Style="{StaticResource contentBorderStyle}">
         <StackPanel SnapsToDevicePixels="True" Width="350" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="Login" FontSize="18"  Margin="10 20" />
             <StackPanel Width="270" HorizontalAlignment="Center">
-                <TextBox Tag="yourmail@yourmail.com" Text="{Binding UserName}" Margin="10" />
-                <PasswordBox Tag="Password" Name="password" PasswordChanged="PasswordBox_PasswordChanged" Margin="10" />
+                <TextBox Tag="yourmail@yourmail.com" Text="{Binding UserName}" Margin="10">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding LoginCommand}" />
+                    </TextBox.InputBindings>
+                </TextBox>
+                <PasswordBox Tag="Password" Name="password" PasswordChanged="PasswordBox_PasswordChanged" Margin="10">
+                    <PasswordBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding LoginCommand}" />
+                    </PasswordBox.InputBindings>
+                </PasswordBox>
                 <StackPanel Orientation="Horizontal">
                     <Button Command="{Binding LoginCommand}" Margin="10 20 10 10" Content="Login" />
                     <Button Style="{StaticResource grayButtonStyle}" Command="{Binding CancelCommand}" Margin="10 20 10 10" Content="Cancel" />

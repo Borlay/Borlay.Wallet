@@ -24,14 +24,14 @@ namespace Borlay.Wallet
             }
         }
 
-        public static SecureString ConvertToSecureString(string valueToSecureString)
+        public static SecureString GetSecureString(this string stringValue)
         {
-            if (valueToSecureString == null)
-                throw new ArgumentNullException(nameof(valueToSecureString));
+            if (stringValue == null)
+                throw new ArgumentNullException(nameof(stringValue));
 
             var securePassword = new SecureString();
 
-            foreach (char c in valueToSecureString)
+            foreach (char c in stringValue)
                 securePassword.AppendChar(c);
 
             securePassword.MakeReadOnly();

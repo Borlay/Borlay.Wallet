@@ -1,13 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Borlay.Wallet.Models.General
 {
-    public class UserLoginModel : LoginModelBase
+    public interface IUserNameCredentials
+    {
+        string UserName { get; }
+        SecureString Password { get; }
+    }
+
+    public class UserLoginModel : LoginModelBase, IUserNameCredentials
     {
         private string userName;
         protected override string DefaultInfo => "Login to your wallet using login name and password. Remember your credentials as we can't restore it.";

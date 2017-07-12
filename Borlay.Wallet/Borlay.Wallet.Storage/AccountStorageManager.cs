@@ -28,15 +28,18 @@ namespace Borlay.Wallet.Storage
             if (account == null)
                 return null;
 
-            if (Security.IsPasswordValid(passwordHash, account.Password))
-            {
-                account.LastLoginDate = DateTime.Now;
-                ConfigurationStorage.Save(accounts);
+            ValidateAccount(account, passwordHash);
 
-                DecryptWallets(passwordHash, account.Wallets);
-                return account;
-            }
-            else
+            account.LastLoginDate = DateTime.Now;
+            ConfigurationStorage.Save(accounts);
+
+            DecryptWallets(passwordHash, account.Wallets);
+            return account;
+        }
+
+        public void ValidateAccount(AccountConfiguration account, string passwordHash)
+        {
+            if (!Security.IsPasswordValid(passwordHash, account.Password))
                 throw new SecurityException("Password or username is invalid");
         }
 
@@ -46,7 +49,7 @@ namespace Borlay.Wallet.Storage
 
             return new AccountConfiguration()
             {
-                UserGuid = Guid.NewGuid(),
+                AccountId = Guid.NewGuid().ToString(),
                 UserName = userName,
                 Password = doublePasswordHash,
                 CreationDate = DateTime.Now,
@@ -61,8 +64,8 @@ namespace Borlay.Wallet.Storage
             if (accounts == null)
                 throw new NullReferenceException(nameof(accounts));
 
-            var userGuid = accountConfiguration.UserGuid;
-            var account = accounts?.Accounts?.FirstOrDefault(a => a.UserGuid == userGuid);
+            var accountId = accountConfiguration.AccountId;
+            var account = accounts?.Accounts?.FirstOrDefault(a => a.AccountId == accountId);
             if (account != null)
             {
                 if (!Security.IsPasswordValid(passwordHash, account.Password))
@@ -72,11 +75,25 @@ namespace Borlay.Wallet.Storage
             EncryptWallets(passwordHash, accountConfiguration.Wallets);
 
             var list = accounts?.Accounts?.ToList() ?? new List<AccountConfiguration>();
-            list.RemoveAll(a => a.UserGuid == accountConfiguration.UserGuid);
+            list.RemoveAll(a => a.AccountId == accountConfiguration.AccountId);
             list.RemoveAll(a => a.UserName.ToLower() == accountConfiguration.UserName.ToLower());
             list.Add(accountConfiguration);
             accounts.Accounts = list.ToArray();
             SaveAccounts(accounts);
+
+            DecryptWallets(passwordHash, accountConfiguration.Wallets);
+        }
+
+        public void SaveWallet(string userName, string passwordHash, WalletConfiguration wallet)
+        {
+            var accounts = GetAccounts();
+            var account = accounts?.Accounts?.FirstOrDefault(a => a.UserName.ToLower() == userName.ToLower());
+            if (account == null)
+                throw new NullReferenceException($"Account for username '{userName}' not found");
+
+            ValidateAccount(account, passwordHash);
+
+
         }
 
         public void EncryptWallets(string passwordHash, params WalletConfiguration[] wallets)

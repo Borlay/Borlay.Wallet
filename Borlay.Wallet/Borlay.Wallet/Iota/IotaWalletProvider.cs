@@ -44,21 +44,24 @@ namespace Borlay.Wallet.Iota
 
         private async void SelectedChanged_SelectedChanged(object arg1, bool arg2)
         {
-            if(isFirstTime)
-            {
-                isFirstTime = false;
-
-                await InitializeAsync();
-            }
+            await InitializeAsync(CancellationToken.None);
         }
 
-        private async Task InitializeAsync()
+        public async Task InitializeAsync(CancellationToken cancellationToken, bool force = false)
         {
-            commandGroup.SetCanExecute(false);
-            //addressesButtons.First().ButtonClick.SetCanExecute(false);
-            await FullRefreshAddressesAsync();
-            commandGroup.SetCanExecute(true);
-            //addressesButtons.First().ButtonClick.SetCanExecute(true);
+            if (isFirstTime)
+            {
+                isFirstTime = false;
+                //commandGroup.SetCanExecute(false);
+                try
+                {
+                    await FullRefreshAddressesAsync(cancellationToken, force);
+                }
+                finally
+                {
+                    //commandGroup.SetCanExecute(true);
+                }
+            }
         }
 
 
@@ -90,7 +93,7 @@ namespace Borlay.Wallet.Iota
 
         protected IEnumerable<IconButtonModel> OpenAddressesButtons()
         {
-            yield return new IconButtonModel(b => RefreshAddressesAsync(), IconType.Restart);
+            yield return new IconButtonModel(b => RefreshKnowAddressesAsync(), IconType.Restart);
             yield return new IconButtonModel(b => { }, IconType.Plus);
         }
 
@@ -116,52 +119,93 @@ namespace Borlay.Wallet.Iota
             Wallet.View = null;
         }
 
-        private async Task RefreshAddressesAsync()
+        public async Task EnsureFirstAddressAsync()
         {
-            var addresses = addressesModel.ContentItems.Select(a => a.Tag)
-                .OfType<Borlay.Iota.Library.Models.AddressItem>().ToArray();
+            if (addressesModel.ContentItems.Count != 0)
+                return;
+
+            var addressItemModel = await CreateAddressAsync(0);
+
+            if (addressesModel.ContentItems.Count == 0)
+                addressesModel.ContentItems.Add(addressItemModel);
+        }
+
+        public async Task<AddressItemModel> CreateAddressAsync(int index)
+        {
+            var api = CreateIotaClient();
+            var seed = walletConfiguration.PrivateKey;
+            var address = await api.GetAddress(seed, index);
+            if (address.TransactionCount == 0)
+            {
+                await api.SendTransfer(new Borlay.Iota.Library.Models.TransferItem()
+                {
+                    Address = address.Address,
+                    Value = 0,
+                    Message = "",
+                    Tag = ""
+                }, CancellationToken.None);
+                await api.RenewAddresses(address);
+            }
+            var addressItemModel = CreateAddressItemModel(address);
+            return addressItemModel;
+        }
+
+        private IEnumerable<Borlay.Iota.Library.Models.AddressItem> GetKnowAddresses()
+        {
+            return addressesModel.ContentItems.Select(a => a.Tag).OfType<Borlay.Iota.Library.Models.AddressItem>();
+        }
+
+        private async Task RefreshKnowAddressesAsync()
+        {
+            var addresses = GetKnowAddresses().ToArray();
             var api = CreateIotaClient();
             await api.RenewAddresses(addresses);
         }
 
-        private async Task FullRefreshAddressesAsync(bool force = false)
+        private async Task FullRefreshAddressesAsync(CancellationToken cancellationToken, bool force = false)
         {
+            var knowAddresses = GetKnowAddresses().ToArray();
             addressesModel.ContentItems.Clear();
 
             var api = CreateIotaClient();
             var seed = walletConfiguration.PrivateKey;
 
-            var groupCount = 1;
-
-            for (int i = 0; i < 500; i += groupCount)
+            for (int i = 0; i < 500; i++)
             {
-                var addresses = await api.GetAddresses(seed, i, groupCount, CancellationToken.None);
+                cancellationToken.ThrowIfCancellationRequested();
+                var address = knowAddresses.FirstOrDefault(a => a.Index == i);
+                if(address == null)
+                    address = await api.GetAddress(seed, i);
                 
-                if (addresses.All(a => a.TransactionCount == 0) && i == 0)
-                {
-                    var address = addresses.First();
-                    await api.SendTransfer(new Borlay.Iota.Library.Models.TransferItem()
-                    {
-                        Address = address.Address,
-                        Value = 0,
-                        Message = "",
-                        Tag = ""
-                    }, CancellationToken.None);
-                    await api.RenewAddresses(address);
-                }
+                //if (i == 0 && address.TransactionCount == 0)
+                //{
+                //    await api.SendTransfer(new Borlay.Iota.Library.Models.TransferItem()
+                //    {
+                //        Address = address.Address,
+                //        Value = 0,
+                //        Message = "",
+                //        Tag = ""
+                //    }, cancellationToken);
+                //    await api.RenewAddresses(address);
+                //}
 
-                if (addresses.All(a => a.TransactionCount == 0) && !force)
+                if (address.TransactionCount == 0 && !force)
                     break;
 
-                addresses = addresses.Where(a => a.TransactionCount > 0).ToArray();
-                foreach (var addr in addresses)
+                if (address.TransactionCount > 0)
                 {
-                    var addressItemModel = new AddressItemModel() { Tag = addr };
-                    addr.BindTo(addressItemModel, d => d.Address, m => m.Address);
-                    addr.BindTo(addressItemModel, d => d.Balance, m => m.Balance);
+                    var addressItemModel = CreateAddressItemModel(address);
                     addressesModel.ContentItems.Add(addressItemModel);
                 }
             }
+        }
+
+        private AddressItemModel CreateAddressItemModel(Borlay.Iota.Library.Models.AddressItem addressItem)
+        {
+            var addressItemModel = new AddressItemModel() { Tag = addressItem };
+            addressItem.BindTo(addressItemModel, d => d.Address, m => m.Address);
+            addressItem.BindTo(addressItemModel, d => d.Balance, m => m.Balance);
+            return addressItemModel;
         }
 
         private IotaApi CreateIotaClient()
@@ -171,7 +215,7 @@ namespace Borlay.Wallet.Iota
             // "http://node.deviceproof.org:14265"
             // "http://88.198.230.98:14265"
             // "http://iota.digits.blue:14265"
-            var api = new IotaApi("http://iota.digits.blue:14265");
+            var api = new IotaApi("http://iota.bitfinex.com:80");
             api.NumberOfThreads = 5;
             return api;
         }

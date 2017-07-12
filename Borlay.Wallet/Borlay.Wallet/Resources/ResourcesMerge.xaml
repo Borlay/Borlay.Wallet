@@ -42,5 +42,8 @@
         <ResourceDictionary 
                   Source="ValueConverters.xaml">
         </ResourceDictionary>
+        <ResourceDictionary 
+                  Source="ContentBorderStyle.xaml">
+        </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
