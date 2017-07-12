@@ -5,6 +5,12 @@
                     xmlns:model="clr-namespace:Borlay.Wallet.Models"
                     xmlns:generalView="clr-namespace:Borlay.Wallet.Views.General" 
                     xmlns:generalModel="clr-namespace:Borlay.Wallet.Models.General">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary 
+                  Source="ButtonStyle.xaml">
+        </ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+    
     <DataTemplate DataType="{x:Type generalModel:UserLoginModel}">
         <generalView:UserLoginView />
     </DataTemplate>
@@ -70,5 +76,21 @@
     <DataTemplate DataType="{x:Type model:CancelSyncModel}">
         <view:CancelSyncView />
     </DataTemplate>
+
+    <DataTemplate DataType="{x:Type model:ScanAddressesModel}">
+        <view:ScanAddressesView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type model:ScanAddressesProgressModel}">
+        <view:ScanAddressesProgressView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type model:ButtonModel}">
+        <Button Command="{Binding ButtonClick, IsAsync=True}" Content="{Binding Content}" />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type model:TextButtonModel}">
+        <Button Command="{Binding ButtonClick, IsAsync=True}" Content="{Binding Content}" Style="{StaticResource textButtonStyle}" />
+    </DataTemplate>
+    
 
 </ResourceDictionary>

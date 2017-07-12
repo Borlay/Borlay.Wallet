@@ -9,15 +9,20 @@ namespace Borlay.Wallet.Models
 {
     public class WalletModel : ModelBase
     {
-        public WalletModel(params TabItem[] menuItems)
-            : this(new BalanceStatsModel(), menuItems)
+        private readonly IScanAddresses scanAddresses;
+
+        public WalletModel(IScanAddresses scanAddresses, params TabItem[] menuItems)
+            : this(scanAddresses, new BalanceStatsModel(), menuItems)
         {
         }
 
-        public WalletModel(BalanceStatsModel balanceStatsModel, params TabItem[] menuItems)
+        public WalletModel(IScanAddresses scanAddresses, BalanceStatsModel balanceStatsModel, params TabItem[] menuItems)
         {
             this.MenuItems = new ObservableCollection<TabItem>();
             this.BalanceStats = new BalanceStatsModel();
+            this.scanAddresses = scanAddresses;
+
+            this.ScanAddresses = new ScanAddressesModel(scanAddresses);
 
             foreach (var item in menuItems)
                 this.MenuItems.Add(item);
@@ -88,8 +93,9 @@ namespace Borlay.Wallet.Models
 
         }
 
+        public ScanAddressesModel ScanAddresses { get; private set; }
 
-        public BalanceStatsModel BalanceStats { get; set; }
+        public BalanceStatsModel BalanceStats { get; private set; }
 
         public ObservableCollection<TabItem> MenuItems { get; private set; }
 

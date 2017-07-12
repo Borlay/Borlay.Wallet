@@ -77,6 +77,8 @@
     <Compile Include="Models\BalanceItemModel.cs" />
     <Compile Include="Models\BundleItemModel.cs" />
     <Compile Include="Models\BundlesModel.cs" />
+    <Compile Include="Models\ButtonModel.cs" />
+    <Compile Include="Models\CancelSyncModel.cs" />
     <Compile Include="Models\ContentCollectionModel.cs" />
     <Compile Include="Models\ContentListModel.cs" />
     <Compile Include="Models\CreateWalletModel.cs" />
@@ -89,7 +91,9 @@
     <Compile Include="Models\General\LoginModelBase.cs" />
     <Compile Include="Models\IconButtonModel.cs" />
     <Compile Include="Models\ScanAddressesModel.cs" />
+    <Compile Include="Models\ScanAddressesProgressModel.cs" />
     <Compile Include="Models\SyncModel.cs" />
+    <Compile Include="Models\TextButtonModel.cs" />
     <Compile Include="Models\TransactionItemBaseModel.cs" />
     <Compile Include="Models\TransactionItemModel.cs" />
     <Compile Include="Models\TransactionsModel.cs" />
@@ -139,6 +143,9 @@
     </Compile>
     <Compile Include="Views\IconButtonView.xaml.cs">
       <DependentUpon>IconButtonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScanAddressesProgressView.xaml.cs">
+      <DependentUpon>ScanAddressesProgressView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScanAddressesView.xaml.cs">
       <DependentUpon>ScanAddressesView.xaml</DependentUpon>
@@ -295,6 +302,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\IconButtonView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScanAddressesProgressView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

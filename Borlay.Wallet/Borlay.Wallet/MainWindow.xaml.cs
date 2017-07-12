@@ -90,16 +90,17 @@ namespace Borlay.Wallet
 
                     if (wallet.IsImported)
                     {
-                        var cancelSync = syncContent
-                            .SetCancelView("Since you are creating your wallet with an existing key we area searching for addresses. You can cancel if you know that there is no addresses.");
-                        try
-                        {
-                            await walletProvider.InitializeAsync(cancelSync.Token, true);
-                        }
-                        catch(OperationCanceledException)
-                        {
-                            // do nothing
-                        }
+                        walletProvider.InitializeAsync(true);
+                        //var cancelSync = syncContent
+                        //    .SetCancelView("Since you are creating your wallet with an existing key we area searching for addresses. You can cancel if you know that there is no addresses.");
+                        //try
+                        //{
+                            
+                        //}
+                        //catch(OperationCanceledException)
+                        //{
+                        //    // do nothing
+                        //}
                     }
 
                     //storageManager.SaveAccount

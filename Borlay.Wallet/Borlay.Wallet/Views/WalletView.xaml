@@ -29,10 +29,13 @@
                     </ListView.ItemsPanel>
                 </ListView>
                 <Border Grid.Row="2" BorderThickness="0 1 0 0" BorderBrush="#d5d5d5" Margin="20 10 30 0" Padding="0 23 0 0">
-                    <ContentControl Content="{Binding BalanceStats}"></ContentControl>
+                    <StackPanel>
+                        <ContentControl Content="{Binding BalanceStats}"></ContentControl>
+                        <ContentControl Content="{Binding ScanAddresses}" Margin="0 15 0 0"></ContentControl>
+                    </StackPanel>
                 </Border>
             </Grid>
-            
+
         </Border>
         <Border Grid.Column="1">
             <ContentControl Content="{Binding View}"></ContentControl>

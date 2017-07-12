@@ -37,8 +37,13 @@ namespace Borlay.Wallet.Models
             {
                 action(parameter);
             }
+            catch (OperationCanceledException)
+            {
+                // do nothing
+            }
             catch (Exception e)
             {
+                // todo handle in better way
                 MessageBox.Show(e.Message);
             }
             finally

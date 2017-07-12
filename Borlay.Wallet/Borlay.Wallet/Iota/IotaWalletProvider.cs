@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Borlay.Wallet.Iota
 {
-    public class IotaWalletProvider
+    public class IotaWalletProvider : IScanAddresses
     {
         private readonly WalletConfiguration walletConfiguration;
         private readonly WalletModel walletModel;
@@ -36,30 +37,34 @@ namespace Borlay.Wallet.Iota
             var menuItems = CreateMenuItems().ToArray();
 
             var balanceStatsModel = new BalanceStatsModel(balanceItems);
-            walletModel = new WalletModel(balanceStatsModel, menuItems);
+            walletModel = new WalletModel(this, balanceStatsModel, menuItems);
 
             menuItems.First().IsSelected = true;
             this.selectedChanged.SelectedChanged += SelectedChanged_SelectedChanged;
         }
 
-        private async void SelectedChanged_SelectedChanged(object arg1, bool arg2)
+        private void SelectedChanged_SelectedChanged(object arg1, bool arg2)
         {
-            await InitializeAsync(CancellationToken.None);
+            InitializeAsync();
         }
 
-        public async Task InitializeAsync(CancellationToken cancellationToken, bool force = false)
+        public async void InitializeAsync(bool force = false)
         {
             if (isFirstTime)
             {
                 isFirstTime = false;
-                //commandGroup.SetCanExecute(false);
                 try
                 {
-                    await RefreshAllAddressesAsync(cancellationToken, force);
+                    await walletModel.ScanAddresses.ScanAddressesAsync(force);
                 }
-                finally
+                catch(OperationCanceledException)
                 {
-                    //commandGroup.SetCanExecute(true);
+                    // do nothing
+                }
+                catch(Exception e)
+                {
+                    // todo handle in better way
+                    MessageBox.Show(e.Message);
                 }
             }
         }
@@ -102,15 +107,10 @@ namespace Borlay.Wallet.Iota
         {
             var iconButtons = addressesButtons.First();
             var addressesView = new ContentListModel<BundleItemModel>(iconButtons);
-
-            for (int i = 0; i < 30; i++)
-            {
-                addressesView.ContentItems.Add(new BundleItemModel() { Hash = "asdfasdfasdfa", Balance = 1234567 });
-                addressesView.ContentItems.Add(new BundleItemModel() { Hash = "asdfasdfasdfa", Balance = 1234967, Tag = "some tag" });
-                addressesView.ContentItems.Add(new BundleItemModel() { Hash = "asdfasdfasdfa", Balance = 1000 });
-                addressesView.ContentItems.Add(new BundleItemModel() { Hash = "bakljsdlfjasdf", Balance = 3000000 });
-            }
-
+            addressesView.ContentItems.Add(new BundleItemModel() { Hash = "asdfasdfasdfa", Balance = 1234567 });
+            addressesView.ContentItems.Add(new BundleItemModel() { Hash = "asdfasdfasdfa", Balance = 1234967, Tag = "some tag" });
+            addressesView.ContentItems.Add(new BundleItemModel() { Hash = "asdfasdfasdfa", Balance = 1000 });
+            addressesView.ContentItems.Add(new BundleItemModel() { Hash = "bakljsdlfjasdf", Balance = 3000000 });
             Wallet.View = addressesView;
         }
 
@@ -162,7 +162,7 @@ namespace Borlay.Wallet.Iota
             await api.RenewAddresses(addresses);
         }
 
-        private async Task RefreshAllAddressesAsync(CancellationToken cancellationToken, bool force = false)
+        async Task IScanAddresses.ScanAddressesAsync(IUpdateProgress updateProgress, bool force, CancellationToken cancellationToken)
         {
             var knowAddresses = GetKnowAddresses().ToArray();
             addressesModel.ContentItems.Clear();
@@ -170,24 +170,16 @@ namespace Borlay.Wallet.Iota
             var api = CreateIotaClient();
             var seed = walletConfiguration.PrivateKey;
 
-            for (int i = 0; i < 500; i++)
+            var totalScan = 500;
+
+            for (int i = 0; i < totalScan; i++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
+                updateProgress.UpdateProgress(i + 1, totalScan);
+
                 var address = knowAddresses.FirstOrDefault(a => a.Index == i);
-                if(address == null)
+                if (address == null)
                     address = await api.GetAddress(seed, i);
-                
-                //if (i == 0 && address.TransactionCount == 0)
-                //{
-                //    await api.SendTransfer(new Borlay.Iota.Library.Models.TransferItem()
-                //    {
-                //        Address = address.Address,
-                //        Value = 0,
-                //        Message = "",
-                //        Tag = ""
-                //    }, cancellationToken);
-                //    await api.RenewAddresses(address);
-                //}
 
                 if (address.TransactionCount == 0 && !force)
                     break;
@@ -228,5 +220,7 @@ namespace Borlay.Wallet.Iota
             api.NumberOfThreads = 5;
             return api;
         }
+
+        
     }
 }
