@@ -32,6 +32,7 @@ namespace Borlay.Wallet.Storage
             this.CreationDate = DateTime.Now;
             this.EncryptionType = EncryptionType.None;
             this.IsActive = true;
+            this.AlwaysScan = false;
         }
 
         public string WalletId { get; set; }
@@ -56,7 +57,7 @@ namespace Borlay.Wallet.Storage
 
         public bool IsImported { get; set; }
 
-        public bool HasUnsortedAddresses { get; set; }
+        public bool AlwaysScan { get; set; }
 
         public EncryptionType EncryptionType { get; set; }
 

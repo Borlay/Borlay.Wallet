@@ -55,7 +55,7 @@ namespace Borlay.Wallet.Iota
                 //commandGroup.SetCanExecute(false);
                 try
                 {
-                    await FullRefreshAddressesAsync(cancellationToken, force);
+                    await RefreshAllAddressesAsync(cancellationToken, force);
                 }
                 finally
                 {
@@ -162,7 +162,7 @@ namespace Borlay.Wallet.Iota
             await api.RenewAddresses(addresses);
         }
 
-        private async Task FullRefreshAddressesAsync(CancellationToken cancellationToken, bool force = false)
+        private async Task RefreshAllAddressesAsync(CancellationToken cancellationToken, bool force = false)
         {
             var knowAddresses = GetKnowAddresses().ToArray();
             addressesModel.ContentItems.Clear();

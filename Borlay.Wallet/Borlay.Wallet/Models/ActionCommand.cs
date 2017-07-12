@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Borlay.Wallet.Models
@@ -32,8 +33,18 @@ namespace Borlay.Wallet.Models
         public void Execute(object parameter)
         {
             ExecutingChanged(this, true);
-            action(parameter);
-            ExecutingChanged(this, false);
+            try
+            {
+                action(parameter);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                ExecutingChanged(this, false);
+            }
         }
 
         public void SetCanExecute(bool canExecute)

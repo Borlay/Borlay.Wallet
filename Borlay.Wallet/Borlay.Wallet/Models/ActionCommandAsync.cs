@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Borlay.Wallet.Models
@@ -43,11 +44,21 @@ namespace Borlay.Wallet.Models
 
             RaiseCanExecuteChanged();
 
-            await action(parameter);
-            isExecuting = false;
-            ExecutingChanged(this, false);
+            try
+            {
+                await action(parameter);
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                isExecuting = false;
+                ExecutingChanged(this, false);
 
-            RaiseCanExecuteChanged();
+                RaiseCanExecuteChanged();
+            }
         }
 
         public void SetCanExecute(bool canExecute)
