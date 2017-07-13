@@ -9,6 +9,49 @@ namespace Borlay.Wallet.Models
 {
     public class BundleItemModel : TransactionItemBaseModel
     {
-        public ObservableCollection<TransactionItemModel> TransactionItems { get; private set; }
+        private readonly BundleDetailModel bundleDetail;
+
+        public BundleItemModel(params TransactionItemModel[] transactionItems)
+        {
+            this.bundleDetail = new BundleDetailModel(transactionItems);
+        }
+
+        private bool isSelected;
+        public bool IsSelected
+        {
+            get
+            {
+                return isSelected;
+            }
+            set
+            {
+                if (this.isSelected != value)
+                {
+                    this.isSelected = value;
+                    NotifyPropertyChanged();
+
+                    if (value)
+                        VisibleBundleDetail = BundleDetail;
+                    else
+                        VisibleBundleDetail = null;
+                }
+            }
+        }
+
+        public BundleDetailModel BundleDetail => bundleDetail;
+
+        private BundleDetailModel visibleBundleDetail;
+        public BundleDetailModel VisibleBundleDetail
+        {
+            get
+            {
+                return visibleBundleDetail;
+            }
+            set
+            {
+                this.visibleBundleDetail = value;
+                NotifyPropertyChanged();
+            }
+        }
     }
 }

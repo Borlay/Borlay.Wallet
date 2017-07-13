@@ -9,9 +9,12 @@ namespace Borlay.Wallet.Models
     public class TransactionItemBaseModel : ModelBase
     {
         private string hash;
+        private string address;
         private decimal balance;
         private DateTime dateTime;
-        private string tag;
+        private string transactionTag;
+
+        public int Index { get; set; }
 
         public string Hash
         {
@@ -24,6 +27,22 @@ namespace Borlay.Wallet.Models
                 if (this.hash != value)
                 {
                     this.hash = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public string Address
+        {
+            get
+            {
+                return address;
+            }
+            set
+            {
+                if (this.address != value)
+                {
+                    this.address = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -61,17 +80,34 @@ namespace Borlay.Wallet.Models
             }
         }
 
-        public string Tag
+        public string TransactionTag
         {
             get
             {
-                return tag;
+                return transactionTag;
             }
             set
             {
-                if (this.tag != value)
+                if (this.transactionTag != value)
                 {
-                    this.tag = value;
+                    this.transactionTag = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        private bool isConfirmed;
+        public bool IsConfirmed
+        {
+            get
+            {
+                return isConfirmed;
+            }
+            set
+            {
+                if (this.isConfirmed != value)
+                {
+                    this.isConfirmed = value;
                     NotifyPropertyChanged();
                 }
             }

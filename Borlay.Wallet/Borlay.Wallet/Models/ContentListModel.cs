@@ -20,7 +20,7 @@ namespace Borlay.Wallet.Models
     }
 
 
-    public class ContentListModel<T> : ContentListModel where T : class, new()
+    public class ContentListModel<T> : ContentListModel where T : class
     {
         public ContentListModel(ObservableCollection<T> contentItems, params ButtonModel[] buttons)
             : base(contentItems, buttons)

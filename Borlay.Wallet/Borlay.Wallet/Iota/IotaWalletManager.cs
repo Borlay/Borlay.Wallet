@@ -11,20 +11,23 @@ using System.Windows;
 
 namespace Borlay.Wallet.Iota
 {
-    public class IotaWalletProvider : IScanAddresses
+    public class IotaWalletManager : IScanAddresses
     {
         private readonly WalletConfiguration walletConfiguration;
         private readonly WalletModel walletModel;
         private readonly ContentCollectionModel<AddressItemModel> addressesModel;
+        private readonly ContentListModel<BundleItemModel> bundlesModel;
         private readonly IconButtonModel[] addressesButtons;
         private readonly ISelectedChanged selectedChanged;
         private readonly ActionCommandGroup commandGroup;
+
+        private readonly IotaWalletTransactionManager transactionManager;
 
         private bool isFirstTime = true;
 
         public WalletModel Wallet => walletModel;
 
-        public IotaWalletProvider(WalletConfiguration walletConfiguration, ISelectedChanged selectedChanged)
+        public IotaWalletManager(WalletConfiguration walletConfiguration, ISelectedChanged selectedChanged)
         {
             this.walletConfiguration = walletConfiguration;
             this.selectedChanged = selectedChanged;
@@ -32,6 +35,8 @@ namespace Borlay.Wallet.Iota
             addressesButtons = OpenAddressesButtons().ToArray();
             commandGroup = new ActionCommandGroup(addressesButtons.Select(b => b.ButtonClick).ToArray());
             addressesModel = new ContentCollectionModel<AddressItemModel>(addressesButtons);
+            bundlesModel = new ContentListModel<BundleItemModel>(addressesButtons.First());
+            transactionManager = new IotaWalletTransactionManager(bundlesModel.ContentItems);
 
             var balanceItems = CreateBalanceItems().ToArray();
             var menuItems = CreateMenuItems().ToArray();
@@ -87,7 +92,7 @@ namespace Borlay.Wallet.Iota
             yield return new TabItem()
             {
                 Name = "Transactions",
-                Selected = (t) => OpenTransactions()
+                Selected = (t) => Wallet.View = bundlesModel, // OpenTransactions()
             };
             yield return new TabItem()
             {
@@ -103,16 +108,16 @@ namespace Borlay.Wallet.Iota
         }
 
 
-        public virtual async void OpenTransactions()
-        {
-            var iconButtons = addressesButtons.First();
-            var addressesView = new ContentListModel<BundleItemModel>(iconButtons);
-            addressesView.ContentItems.Add(new BundleItemModel() { Hash = "asdfasdfasdfa", Balance = 1234567 });
-            addressesView.ContentItems.Add(new BundleItemModel() { Hash = "asdfasdfasdfa", Balance = 1234967, Tag = "some tag" });
-            addressesView.ContentItems.Add(new BundleItemModel() { Hash = "asdfasdfasdfa", Balance = 1000 });
-            addressesView.ContentItems.Add(new BundleItemModel() { Hash = "bakljsdlfjasdf", Balance = 3000000 });
-            Wallet.View = addressesView;
-        }
+        //public virtual async void OpenTransactions()
+        //{
+        //    var iconButtons = addressesButtons.First();
+        //    var bundlesView = new ContentListModel<BundleItemModel>(iconButtons);
+        //    bundlesView.ContentItems.Add(new BundleItemModel() { Hash = "asdfasdfasdfa", Balance = 1234567 });
+        //    bundlesView.ContentItems.Add(new BundleItemModel() { Hash = "asdfasdfasdfa", Balance = -1234967, Tag = "some tag" });
+        //    bundlesView.ContentItems.Add(new BundleItemModel() { Hash = "asdfasdfasdfa", Balance = 1000 });
+        //    bundlesView.ContentItems.Add(new BundleItemModel() { Hash = "bakljsdlfjasdf", Balance = 3000000 });
+        //    Wallet.View = bundlesView;
+        //}
 
         public virtual async void OpenPaper()
         {
@@ -160,6 +165,12 @@ namespace Borlay.Wallet.Iota
             var addresses = GetKnowAddresses().ToArray();
             var api = CreateIotaClient();
             await api.RenewAddresses(addresses);
+            List<string> transactionHashes = new List<string>();
+            foreach(var address in addresses)
+            {
+                transactionHashes.AddRange(address.Transactions.Select(t => t.Hash).ToArray());
+            }
+            await transactionManager.AddTransactions(transactionHashes.ToArray());
         }
 
         async Task IScanAddresses.ScanAddressesAsync(IUpdateProgress updateProgress, bool force, CancellationToken cancellationToken)
@@ -188,6 +199,8 @@ namespace Borlay.Wallet.Iota
                 {
                     var addressItemModel = CreateAddressItemModel(address);
                     addressesModel.ContentItems.Add(addressItemModel);
+
+                    await transactionManager.AddTransactions(address.Transactions.Select(t => t.Hash).ToArray());
                 }
             }
         }

@@ -84,7 +84,7 @@ namespace Borlay.Wallet
                         Name = wallet.Name,
                         IsSelected = false,
                     };
-                    var walletProvider = new Iota.IotaWalletProvider(wallet, tabItem);
+                    var walletProvider = new Iota.IotaWalletManager(wallet, tabItem);
 
                     await walletProvider.EnsureFirstAddressAsync();
 
@@ -146,7 +146,7 @@ namespace Borlay.Wallet
                         Name = wallet.Name,
                         IsSelected = false,
                     };
-                    var walletProvider = new Iota.IotaWalletProvider(wallet, tabItem);
+                    var walletProvider = new Iota.IotaWalletManager(wallet, tabItem);
                     tabItem.Selected = (t) => View = walletProvider.Wallet;
                     Header.TabItems.Add(tabItem);
                 }

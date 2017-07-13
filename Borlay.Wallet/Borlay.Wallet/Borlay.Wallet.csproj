@@ -68,13 +68,16 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Extensions.cs" />
-    <Compile Include="Iota\IotaWalletProvider.cs" />
+    <Compile Include="Iota\Extensions.cs" />
+    <Compile Include="Iota\IotaWalletManager.cs" />
+    <Compile Include="Iota\IotaWalletTransactionManager.cs" />
     <Compile Include="Models\ActionCommand.cs" />
     <Compile Include="Models\ActionCommandGroup.cs" />
     <Compile Include="Models\AddressesModel.cs" />
     <Compile Include="Models\AddressItemModel.cs" />
     <Compile Include="Models\BalanceStatsModel.cs" />
     <Compile Include="Models\BalanceItemModel.cs" />
+    <Compile Include="Models\BundleDetailModel.cs" />
     <Compile Include="Models\BundleItemModel.cs" />
     <Compile Include="Models\BundlesModel.cs" />
     <Compile Include="Models\ButtonModel.cs" />
@@ -110,6 +113,9 @@
     </Compile>
     <Compile Include="Views\BalanceStatsView.xaml.cs">
       <DependentUpon>BalanceStatsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BundleDetailView.xaml.cs">
+      <DependentUpon>BundleDetailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\BundleItemView.xaml.cs">
       <DependentUpon>BundleItemView.xaml</DependentUpon>
@@ -258,6 +264,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BalanceStatsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BundleDetailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

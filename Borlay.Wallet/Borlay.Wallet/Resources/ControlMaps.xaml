@@ -85,6 +85,12 @@
         <view:ScanAddressesProgressView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type model:BundleDetailModel}">
+        <view:BundleDetailView />
+    </DataTemplate>
+
+    
+    
     <DataTemplate DataType="{x:Type model:ButtonModel}">
         <Button Command="{Binding ButtonClick, IsAsync=True}" Content="{Binding Content}" />
     </DataTemplate>

@@ -29,6 +29,8 @@ namespace Borlay.Wallet.Models
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var decValue = (decimal)value;
+            var abs = decValue < 0 ? -1 : 1;
+            decValue = Math.Abs(decValue);
             var count = 0;
 
             while (decValue >= 1000)
@@ -43,6 +45,7 @@ namespace Borlay.Wallet.Models
                 return value;
 
             var prefix = prefixes[count];
+            decValue *= abs;
             return $"{decValue} {prefix}";
         }
 
