@@ -63,5 +63,6 @@ namespace Borlay.Wallet.Models
         Restart,
         Checkmark,
         Settings,
+        Sent,
     }
 }

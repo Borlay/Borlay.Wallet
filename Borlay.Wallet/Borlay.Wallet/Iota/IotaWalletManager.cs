@@ -1,8 +1,11 @@
 ﻿using Borlay.Iota.Library;
+using Borlay.Iota.Library.Models;
+using Borlay.Wallet;
 using Borlay.Wallet.Models;
 using Borlay.Wallet.Storage;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -17,9 +20,11 @@ namespace Borlay.Wallet.Iota
         private readonly WalletModel walletModel;
         private readonly ContentCollectionModel<AddressItemModel> addressesModel;
         private readonly ContentListModel<BundleItemModel> bundlesModel;
+        private readonly ObservableCollection<TransactionItemModel> transactionCollection;
         private readonly IconButtonModel[] addressesButtons;
         private readonly ISelectedChanged selectedChanged;
         private readonly ActionCommandGroup commandGroup;
+
 
         private readonly IotaWalletTransactionManager transactionManager;
 
@@ -36,16 +41,23 @@ namespace Borlay.Wallet.Iota
             commandGroup = new ActionCommandGroup(addressesButtons.Select(b => b.ButtonClick).ToArray());
             addressesModel = new ContentCollectionModel<AddressItemModel>(addressesButtons);
             bundlesModel = new ContentListModel<BundleItemModel>(addressesButtons.First());
-            transactionManager = new IotaWalletTransactionManager(bundlesModel.ContentItems);
+            transactionCollection = new ObservableCollection<TransactionItemModel>();
+            transactionManager = new IotaWalletTransactionManager(transactionCollection, bundlesModel.ContentItems);
 
             var balanceItems = CreateBalanceItems().ToArray();
             var menuItems = CreateMenuItems().ToArray();
 
             var balanceStatsModel = new BalanceStatsModel(balanceItems);
             walletModel = new WalletModel(this, balanceStatsModel, menuItems);
+            walletModel.NewSend += WalletModel_NewSend;
 
             menuItems.First().IsSelected = true;
             this.selectedChanged.SelectedChanged += SelectedChanged_SelectedChanged;
+        }
+
+        private async void WalletModel_NewSend(WalletModel obj)
+        {
+            OpenSend();
         }
 
         private void SelectedChanged_SelectedChanged(object arg1, bool arg2)
@@ -91,6 +103,13 @@ namespace Borlay.Wallet.Iota
             };
             yield return new TabItem()
             {
+                Name = "In-Out",
+                Selected = (t) =>
+                    Wallet.View = null,
+                IsSelected = false
+            };
+            yield return new TabItem()
+            {
                 Name = "Transactions",
                 Selected = (t) => Wallet.View = bundlesModel, // OpenTransactions()
             };
@@ -124,6 +143,112 @@ namespace Borlay.Wallet.Iota
             Wallet.View = null;
         }
 
+        public virtual void OpenSend(params AddressItemModel[] addressModels)
+        {
+            if (Wallet.View is NewSendModel) return;
+            //TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+            var oldView = Wallet.View;
+            var sendModel = new NewSendModel(Wallet, addressModels, async(m) =>
+            {
+                SendTransfer(m);
+            });
+            sendModel.Open();
+            
+            //await tcs.Task;
+        }
+
+        public async void SendTransfer(NewSendModel sendModel)
+        {
+            var syncModel = new CancelSyncModel() { Text = "We are about to send your transaction" };
+            walletModel.SyncModels.Add(syncModel);
+            await SendTransfer(sendModel, syncModel);
+            walletModel.SyncModels.Remove(syncModel);
+        }
+
+        public async Task SendTransfer(NewSendModel sendModel, CancelSyncModel syncModel)
+        {
+            var addressModels = sendModel.Addresses.ToArray();
+            if (addressModels == null || addressModels.Length == 0)
+                addressModels = addressesModel.GetAddressModels();
+
+            var addressItems = addressModels.Select(a => a.Tag).OfType<AddressItem>().ToArray();
+            var api = CreateIotaClient();
+            syncModel.Text = "Renew the addresses balances";
+            await api.RenewAddresses(addressItems);
+            var value = long.Parse(sendModel.Value.ToString());
+            var filteredAddressItems = addressItems.FilterBalance(value).ToArray();
+            syncModel.Text = "Searching for the remainder";
+            var remainderAddressItem = await GetRemainder(filteredAddressItems.Select(a => a.Address).ToArray(), syncModel.Token);
+            var transfer = new TransferItem()
+            {
+                Address = sendModel.Address,
+                Value = value,
+                Tag = sendModel.MessageTag,
+                Message = sendModel.Message
+            };
+            //api.FindReminderAddress(walletConfiguration.PrivateKey, )
+            var transactions = transfer.CreateTransactions(remainderAddressItem.Address, filteredAddressItems).ToArray();
+            await SendTransactions(transactions, syncModel);
+            //var transactionItems = await api.SendTransactions(transactions, CancellationToken.None);
+            //await RefreshAddressesAsync(addressModels);
+        }
+
+        public async Task<AddressItem> GetRemainder(string[] addresses, CancellationToken cancellationToken)
+        {
+            var allAddressItems = addressesModel.GetAddressItems();
+            foreach(var addressItem in allAddressItems)
+            {
+                if (addresses.Contains(addressItem.Address))
+                    continue;
+
+                if (addressItem.TransactionCount == 0)
+                    return addressItem;
+
+                var transactions = transactionCollection.Where(t => t.IsOwn && t.Address == addressItem.Address).ToArray();
+                if (transactions.All(t => t.Balance >= 0))
+                    return addressItem;
+            }
+
+            var lastIndex = allAddressItems.Max(a => a.Index);
+            var api = CreateIotaClient();
+            var seed = walletConfiguration.PrivateKey;
+            var reminder = await api.FindReminderAddress(seed, lastIndex + 1, cancellationToken);
+            return reminder;
+        }
+
+
+        private async Task SendTransactions(TransactionItem[] transactionItems, CancelSyncModel syncModel)
+        {
+            syncModel.Text = "We are sending your transaction";
+            var api = CreateIotaClient();
+            var resultTransactionItems = await api.SendTransactions(transactionItems, syncModel.Token);
+            syncModel.Text = "We are forcing your transaction to confirm";
+            await RebroadcastTransactions(resultTransactionItems, syncModel);
+        }
+
+        private async Task RebroadcastTransactions(TransactionItem[] transactionItems, CancelSyncModel syncModel)
+        {
+            var api = CreateIotaClient();
+            int count = 0;
+            var transaction = transactionItems.Where(t => long.Parse(t.Value) < 0).FirstOrDefault();
+            if (transaction != null)
+            {
+                while (!syncModel.Token.IsCancellationRequested)
+                {
+                    var existingTransaction = (await api.GetTransactionItems(transaction.Hash)).FirstOrDefault();
+                    if (existingTransaction.Persistence)
+                        return;
+
+                    await api.Rebroadcast(transactionItems, syncModel.Token);
+                    count++;
+                    syncModel.Text = $"Forced {count} time(s)";
+                }
+            }
+        }
+
+
+
+
         public async Task EnsureFirstAddressAsync()
         {
             if (addressesModel.ContentItems.Count != 0)
@@ -155,33 +280,42 @@ namespace Borlay.Wallet.Iota
             return addressItemModel;
         }
 
-        private IEnumerable<Borlay.Iota.Library.Models.AddressItem> GetKnowAddresses()
-        {
-            return addressesModel.ContentItems.Select(a => a.Tag).OfType<Borlay.Iota.Library.Models.AddressItem>();
-        }
-
         private async Task RefreshKnowAddressesAsync()
         {
-            var addresses = GetKnowAddresses().ToArray();
+            var addressModels = addressesModel.GetAddressModels();// GetKnowAddresses().ToArray();
+            await RefreshAddressesAsync(addressModels);
+        }
+
+        private async Task RefreshAddressesAsync(AddressItemModel[] addressModels)
+        {
             var api = CreateIotaClient();
-            await api.RenewAddresses(addresses);
-            List<string> transactionHashes = new List<string>();
-            foreach(var address in addresses)
+            await addressModels.ParallelAsync(async a =>
             {
-                transactionHashes.AddRange(address.Transactions.Select(t => t.Hash).ToArray());
-            }
-            await transactionManager.AddTransactions(transactionHashes.ToArray());
+                var addressItem = (AddressItem)a.Tag;
+                await api.RenewAddresses(addressItem);
+                var task = RefreshAddressTransactions(a);
+                //var transactions = await transactionManager.AddTransactions(addressItem.Transactions.Select(t => t.Hash).ToArray());
+            });
+            //await api.RenewAddresses(addressItems);
+            //List<string> transactionHashes = new List<string>();
+            //foreach (var address in addressItems)
+            //{
+            //    transactionHashes.AddRange(address.Transactions.Select(t => t.Hash).ToArray());
+            //}
+            //await transactionManager.AddTransactions(transactionHashes.ToArray());
         }
 
         async Task IScanAddresses.ScanAddressesAsync(IUpdateProgress updateProgress, bool force, CancellationToken cancellationToken)
         {
-            var knowAddresses = GetKnowAddresses().ToArray();
+            var knowAddresses = addressesModel.GetAddressItems(); // GetKnowAddresses().ToArray();
             addressesModel.ContentItems.Clear();
 
             var api = CreateIotaClient();
             var seed = walletConfiguration.PrivateKey;
 
             var totalScan = 500;
+
+            List<Task> transactionTasks = new List<Task>();
 
             for (int i = 0; i < totalScan; i++)
             {
@@ -200,14 +334,26 @@ namespace Borlay.Wallet.Iota
                     var addressItemModel = CreateAddressItemModel(address);
                     addressesModel.ContentItems.Add(addressItemModel);
 
-                    await transactionManager.AddTransactions(address.Transactions.Select(t => t.Hash).ToArray());
+                    var task = RefreshAddressTransactions(addressItemModel);
+                    //var task = transactionManager.AddTransactions(address.Transactions.Select(t => t.Hash).ToArray());
+                    transactionTasks.Add(task);
                 }
             }
+            await Task.WhenAll(transactionTasks);
         }
+
+        private async Task RefreshAddressTransactions(AddressItemModel addressItemModel)
+        {
+            var address = (AddressItem)addressItemModel.Tag;
+            var transactions = await transactionManager.AddTransactions(address.Transactions.Select(t => t.Hash).ToArray());
+            if (!addressItemModel.HasWithdrawal)
+                addressItemModel.HasWithdrawal = transactions.Any(t => long.Parse(t.Value) < 0);
+        }
+
 
         private AddressItemModel CreateAddressItemModel(Borlay.Iota.Library.Models.AddressItem addressItem)
         {
-            var addressItemModel = new AddressItemModel() { Tag = addressItem };
+            var addressItemModel = new AddressItemModel((a) => OpenSend(a)) { Tag = addressItem };
             addressItem.BindTo(addressItemModel, d => d.Address, m => m.Address);
             addressItem.BindTo(addressItemModel, d => d.Balance, m => m.Balance);
             addressItem.Changed(a => a.Balance, (a, v) => RefreshBalanceStats());
@@ -216,7 +362,7 @@ namespace Borlay.Wallet.Iota
 
         private void RefreshBalanceStats()
         {
-            var addresses = GetKnowAddresses();
+            var addresses = addressesModel.GetAddressItems();
             var iotaBalance = addresses.Sum(a => a.Balance);
             var balance = walletModel.BalanceStats.Balances.FirstOrDefault(b => b.WalletType == WalletType.Iota);
             balance.Value = iotaBalance;
@@ -230,10 +376,8 @@ namespace Borlay.Wallet.Iota
             // "http://88.198.230.98:14265"
             // "http://iota.digits.blue:14265"
             var api = new IotaApi("http://iota.bitfinex.com:80");
-            api.NumberOfThreads = 5;
+            //api.NumberOfThreads = 5;
             return api;
         }
-
-        
     }
 }

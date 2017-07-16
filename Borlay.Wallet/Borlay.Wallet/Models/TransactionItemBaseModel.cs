@@ -96,6 +96,24 @@ namespace Borlay.Wallet.Models
             }
         }
 
+        private bool isOwn;
+        public bool IsOwn
+        {
+            get
+            {
+                return isOwn;
+            }
+            set
+            {
+                if (this.isOwn != value)
+                {
+                    this.isOwn = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+
         private bool isConfirmed;
         public bool IsConfirmed
         {

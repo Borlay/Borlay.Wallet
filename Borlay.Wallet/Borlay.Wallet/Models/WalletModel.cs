@@ -7,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace Borlay.Wallet.Models
 {
-    public class WalletModel : ModelBase
+    public interface IView
     {
+        object View { get; set; }
+    }
+
+    public class WalletModel : ModelBase, IView
+    {
+        public event Action<WalletModel> NewSend = (w) => { };
         private readonly IScanAddresses scanAddresses;
 
         public WalletModel(IScanAddresses scanAddresses, params TabItem[] menuItems)
@@ -21,8 +27,10 @@ namespace Borlay.Wallet.Models
             this.MenuItems = new ObservableCollection<TabItem>();
             this.BalanceStats = new BalanceStatsModel();
             this.scanAddresses = scanAddresses;
+            this.SendCommand = new ActionCommand((s) => NewSend(this));
 
             this.ScanAddresses = new ScanAddressesModel(scanAddresses);
+            this.SyncModels = new ObservableCollection<CancelSyncModel>();
 
             foreach (var item in menuItems)
                 this.MenuItems.Add(item);
@@ -59,17 +67,17 @@ namespace Borlay.Wallet.Models
 
         public virtual async void OpenAddresses()
         {
-            var iconButtons = OpenAddressesButtons().ToArray();
-            var addressesView = new ContentCollectionModel<AddressItemModel>(iconButtons);
-            for (int i = 0; i < 30; i++)
-            {
-                addressesView.ContentItems.Add(new AddressItemModel() { Address = "asdfasdfasdfa", Balance = 1234567 });
-                addressesView.ContentItems.Add(new AddressItemModel() { Address = "asdfasdfasdfa", Balance = 1234967 });
-                addressesView.ContentItems.Add(new AddressItemModel() { Address = "asdfasdfasdfa", Balance = 1000 });
-                addressesView.ContentItems.Add(new AddressItemModel() { Address = "bakljsdlfjasdf", Balance = 3000000 });
-            }
+            //var iconButtons = OpenAddressesButtons().ToArray();
+            //var addressesView = new ContentCollectionModel<AddressItemModel>(iconButtons);
+            //for (int i = 0; i < 30; i++)
+            //{
+            //    addressesView.ContentItems.Add(new AddressItemModel() { Address = "asdfasdfasdfa", Balance = 1234567 });
+            //    addressesView.ContentItems.Add(new AddressItemModel() { Address = "asdfasdfasdfa", Balance = 1234967 });
+            //    addressesView.ContentItems.Add(new AddressItemModel() { Address = "asdfasdfasdfa", Balance = 1000 });
+            //    addressesView.ContentItems.Add(new AddressItemModel() { Address = "bakljsdlfjasdf", Balance = 3000000 });
+            //}
 
-            View = addressesView;
+            //View = addressesView;
         }
 
         public virtual async void OpenTransactions()
@@ -98,6 +106,10 @@ namespace Borlay.Wallet.Models
         public BalanceStatsModel BalanceStats { get; private set; }
 
         public ObservableCollection<TabItem> MenuItems { get; private set; }
+
+        public IActionCommand SendCommand { get; set; }
+
+        public ObservableCollection<CancelSyncModel> SyncModels { get; set; }
 
         private object view;
         public object View

@@ -17,11 +17,16 @@ namespace Borlay.Wallet.Models
         {
             this.cts = new CancellationTokenSource();
             this.tcs = new TaskCompletionSource<bool>();
-            cts.Token.Register(() => tcs.SetResult(true));
+            cts.Token.Register(() => tcs.SetResult(false));
             this.CancelCommand = new ActionCommand(o => cts.Cancel());
         }
 
-        public virtual Task WaitAsync()
+        public void SetCompleted()
+        {
+            tcs.SetResult(true);
+        }
+
+        public virtual Task<bool> WaitAsync()
         {
             return tcs.Task;
         }

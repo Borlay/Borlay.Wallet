@@ -88,7 +88,9 @@
     <DataTemplate DataType="{x:Type model:BundleDetailModel}">
         <view:BundleDetailView />
     </DataTemplate>
-
+    <DataTemplate DataType="{x:Type model:NewSendModel}">
+        <view:NewSendView />
+    </DataTemplate>
     
     
     <DataTemplate DataType="{x:Type model:ButtonModel}">

@@ -1,4 +1,5 @@
-﻿using Borlay.Iota.Library.Models;
+﻿using Borlay.Iota.Library;
+using Borlay.Iota.Library.Models;
 using Borlay.Wallet.Models;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,43 @@ namespace Borlay.Wallet.Iota
 {
     public static class Extensions
     {
+        public static AddressItemModel[] GetAddressModels(this ContentCollectionModel<AddressItemModel> content)
+        {
+            return content.ContentItems.ToArray();
+        }
+
+        public static AddressItem[] GetAddressItems(this ContentCollectionModel<AddressItemModel> content)
+        {
+            return content.GetAddressModels().GetAddressItems();
+        }
+
+        public static AddressItem[] GetAddressItems(this IEnumerable<AddressItemModel> addressItemModels)
+        {
+            var addressItems = addressItemModels.Select(a => a.Tag).OfType<AddressItem>().ToArray();
+            return addressItems;
+        }
+
+        public static void EnsureTransferAddresses(this IotaApi iotaApi, TransferAddresses transferAddresses)
+        {
+
+        }
+
+        public static IEnumerable<AddressItem> FilterBalance(this IEnumerable<AddressItem> addressItems, long needBalance)
+        {
+            foreach (var address in addressItems)
+            {
+                if (address.Balance == 0) continue;
+
+                needBalance -= address.Balance;
+                yield return address;
+
+                if (needBalance <= 0)
+                    break;
+            }
+
+            throw new Exception("Not enough balance");
+        }
+
 
         public static TransactionItemModel ToModel(this TransactionItem transactionItem)
         {

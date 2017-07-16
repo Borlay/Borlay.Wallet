@@ -15,6 +15,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="120" />
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0">
                 <TextBlock Margin="15 0" FontSize="14" Foreground="#292" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Path=Balance, Converter={StaticResource prefixDecimalConverter}}" />
@@ -22,6 +23,15 @@
             <Border Grid.Column="1" >
                 <TextBlock Margin="10 0" FontSize="14" Foreground="#888" HorizontalAlignment="Left" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"  Text="{Binding Address}" />
             </Border>
+            <StackPanel Margin="20 0" Grid.Column="2"  VerticalAlignment="Center" HorizontalAlignment="Right">
+                <ItemsControl ItemsSource="{Binding ActionItems}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </StackPanel>
         </Grid>
     </Border>
 </UserControl>

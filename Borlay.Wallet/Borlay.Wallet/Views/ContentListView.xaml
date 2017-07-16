@@ -25,10 +25,11 @@
                 </ItemsControl>
             </StackPanel>
             <Border Grid.Row="1"  >
-                <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent"  Margin="0 4 0 0" BorderThickness="0" ItemContainerStyle="{StaticResource bundleListViewItemStyle}" ItemsSource="{Binding ContentItemsSource}">
+                <ListView SelectionMode="Single" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent"  Margin="0 4 0 0" BorderThickness="0" ItemContainerStyle="{StaticResource bundleListViewItemStyle}" ItemsSource="{Binding ContentItemsSource}">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Orientation="Vertical" Margin="9 5 9 4" ></StackPanel>
+                            <StackPanel Orientation="Vertical" Margin="9 5 9 4" >
+                            </StackPanel>
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
                 </ListView>

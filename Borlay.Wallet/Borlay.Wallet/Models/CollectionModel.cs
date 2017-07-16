@@ -17,7 +17,7 @@ namespace Borlay.Wallet.Models
         public IEnumerable<object> CollectionSource { get; private set; }
     }
 
-    public class CollectionModel<T> : CollectionModel where T : class, new()
+    public class CollectionModel<T> : CollectionModel where T : class
     {
         public CollectionModel(ObservableCollection<T> collection)
             : base(collection)

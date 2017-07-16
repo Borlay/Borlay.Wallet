@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,18 @@ namespace Borlay.Wallet.Models
         private decimal incomingBalance;
         private decimal outgoingBalance;
 
+        public AddressItemModel(Action<AddressItemModel> sendAction)
+        {
+            this.ActionItems = new ObservableCollection<ButtonModel>();
+
+            this.ActionItems.Add(new IconButtonModel((b) => sendAction(this), IconType.Sent, ColorType.Blue));
+        }
+
+        public void SetTransactions()
+        {
+
+        }
+
         public string Address
         {
             get
@@ -24,6 +37,23 @@ namespace Borlay.Wallet.Models
                 if (this.address != value)
                 {
                     this.address = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        private bool hasWithdrawal = false;
+        public bool HasWithdrawal
+        {
+            get
+            {
+                return hasWithdrawal;
+            }
+            set
+            {
+                if (this.hasWithdrawal != value)
+                {
+                    this.hasWithdrawal = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -76,5 +106,7 @@ namespace Borlay.Wallet.Models
                 }
             }
         }
+
+        public ObservableCollection<ButtonModel> ActionItems { get; private set; }
     }
 }
