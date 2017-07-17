@@ -13,21 +13,21 @@ namespace Borlay.Wallet.Models
         public IconButtonModel(Func<ButtonModel, Task> click, IconType iconType, ColorType colorType = ColorType.Gray)
             : base(click)
         {
-            Initialize(iconType, colorType);
+            SetIcon(iconType, colorType);
         }
 
         public IconButtonModel(Action<ButtonModel> click, IconType iconType, ColorType colorType = ColorType.Gray)
             : base(click)
         {
-            Initialize(iconType, colorType);
+            SetIcon(iconType, colorType);
         }
 
         public IconButtonModel(IconType iconType, ColorType colorType = ColorType.Gray)
         {
-            Initialize(iconType, colorType);
+            SetIcon(iconType, colorType);
         }
 
-        private void Initialize(IconType iconType, ColorType colorType)
+        public void SetIcon(IconType iconType, ColorType colorType)
         {
             Content = GetIconPath(iconType, colorType);
         }
@@ -64,5 +64,10 @@ namespace Borlay.Wallet.Models
         Checkmark,
         Settings,
         Sent,
+        Copy,
+        Down,
+        DownFilled,
+        Browser,
+        Replace
     }
 }

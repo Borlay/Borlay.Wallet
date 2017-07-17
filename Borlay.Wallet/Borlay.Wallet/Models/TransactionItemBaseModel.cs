@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Borlay.Wallet.Models
 {
@@ -113,9 +114,8 @@ namespace Borlay.Wallet.Models
             }
         }
 
-
         private bool isConfirmed;
-        public bool IsConfirmed
+        public virtual bool IsConfirmed
         {
             get
             {

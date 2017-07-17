@@ -6,6 +6,20 @@
              xmlns:local="clr-namespace:Borlay.Wallet.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" MinHeight="50" Margin="0">
+    <UserControl.Style>
+        <Style TargetType="{x:Type local:BundleItemView}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="IsConfirmedView" Value="{Binding IsConfirmed}" />
+            <Style.Triggers>
+                <Trigger Property="IsConfirmedView" Value="False">
+                    <Setter Property="Background" Value="#eee"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
+    <Grid>
+        <!--<local:BundleItemView IsConfirmedView="{Binding IsConfirmed, Mode=OneWay}" />-->
+        <!--<local:BundleItemView IsConfirmedView="True" />-->
     <Border Background="Transparent" BorderThickness="0 0 0 1" BorderBrush="#ddd">
         <Grid>
             <Grid.RowDefinitions>
@@ -17,6 +31,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="120" />
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="200" />
                     </Grid.ColumnDefinitions>
                     <Border Grid.Column="0">
                         <TextBlock Margin="15 0" FontSize="14" Foreground="#292" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Path=Balance, Converter={StaticResource prefixDecimalConverter}}" />
@@ -24,6 +39,15 @@
                     <Border Grid.Column="1" >
                         <TextBlock Margin="10 0" FontSize="14" Foreground="#888" HorizontalAlignment="Left" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"  Text="{Binding Address}" />
                     </Border>
+                    <StackPanel Margin="20 0" Grid.Column="2"  VerticalAlignment="Center" HorizontalAlignment="Right">
+                        <ItemsControl ItemsSource="{Binding ActionItems}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </StackPanel>
                 </Grid>
             </Border>
             <Border Grid.Row="1">
@@ -31,4 +55,5 @@
             </Border>
         </Grid>
     </Border>
+    </Grid>
 </UserControl>

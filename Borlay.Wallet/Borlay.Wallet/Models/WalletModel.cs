@@ -82,18 +82,18 @@ namespace Borlay.Wallet.Models
 
         public virtual async void OpenTransactions()
         {
-            var iconButtons = OpenAddressesButtons().ToArray();
-            var addressesView = new ContentListModel<BundleItemModel>(iconButtons);
+            //var iconButtons = OpenAddressesButtons().ToArray();
+            //var addressesView = new ContentListModel<BundleItemModel>(iconButtons);
 
-            for (int i = 0; i < 30; i++)
-            {
-                addressesView.ContentItems.Add(new BundleItemModel() { Hash = "asdfasdfasdfa", Balance = 1234567 });
-                addressesView.ContentItems.Add(new BundleItemModel() { Hash = "asdfasdfasdfa", Balance = 1234967, Tag = "some tag" });
-                addressesView.ContentItems.Add(new BundleItemModel() { Hash = "asdfasdfasdfa", Balance = 1000 });
-                addressesView.ContentItems.Add(new BundleItemModel() { Hash = "bakljsdlfjasdf", Balance = 3000000 });
-            }
+            //for (int i = 0; i < 30; i++)
+            //{
+            //    addressesView.ContentItems.Add(new BundleItemModel() { Hash = "asdfasdfasdfa", Balance = 1234567 });
+            //    addressesView.ContentItems.Add(new BundleItemModel() { Hash = "asdfasdfasdfa", Balance = 1234967, Tag = "some tag" });
+            //    addressesView.ContentItems.Add(new BundleItemModel() { Hash = "asdfasdfasdfa", Balance = 1000 });
+            //    addressesView.ContentItems.Add(new BundleItemModel() { Hash = "bakljsdlfjasdf", Balance = 3000000 });
+            //}
 
-            View = addressesView;
+            //View = addressesView;
         }
 
         public virtual async void OpenPaper()

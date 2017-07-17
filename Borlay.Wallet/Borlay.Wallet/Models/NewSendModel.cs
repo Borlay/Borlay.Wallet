@@ -16,7 +16,7 @@ namespace Borlay.Wallet.Models
     {
 
         private string address;
-        private decimal value;
+        private decimal? value;
         private string messageTag;
         private string message;
         private readonly IView view;
@@ -24,14 +24,27 @@ namespace Borlay.Wallet.Models
 
         public ObservableCollection<AddressItemModel> Addresses { get; set; }
 
-        public NewSendModel(IView view, AddressItemModel[] addresses, Func<NewSendModel, Task> sendTransfer)
+        public NewSendModel(IView view, AddressItemModel[] addresses, Action<NewSendModel> sendTransfer)
         {
             this.view = view;
             this.Addresses = new ObservableCollection<AddressItemModel>(addresses);
-            this.SendCommand = new ActionCommandAsync(async o =>
+            this.SendCommand = new ActionCommand(o =>
             {
-                await sendTransfer(this);
                 this.view.View = oldView;
+                try
+                {
+                    sendTransfer(this);
+                }
+                catch(OperationCanceledException)
+                {
+
+                }
+                catch(Exception e)
+                {
+                    this.view.View = this;
+                    this.ErrorText = e.Message;
+                }
+                
             });
             this.CancelCommand = new ActionCommand(o => Cancel());
         }
@@ -65,7 +78,7 @@ namespace Borlay.Wallet.Models
             }
         }
 
-        public decimal Value
+        public decimal? Value
         {
             get
             {
@@ -113,6 +126,22 @@ namespace Borlay.Wallet.Models
             }
         }
 
+        private string errorText;
+        public string ErrorText
+        {
+            get
+            {
+                return errorText;
+            }
+            set
+            {
+                if (this.errorText != value)
+                {
+                    errorText = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
         public IActionCommand SendCommand { get; private set; }
         public IActionCommand CancelCommand { get; private set; }
     }

@@ -10,10 +10,11 @@
         <StackPanel>
             <TextBlock Margin="20" FontSize="15">Send money</TextBlock>
             <StackPanel HorizontalAlignment="Center" Margin="20">
-                <TextBox Tag="Address" VerticalAlignment="Center" Margin="20 10" HorizontalAlignment="Center" Width="400"></TextBox>
-                <TextBox Tag="Value: 10M" VerticalAlignment="Center" Margin="20 10" HorizontalAlignment="Center" Width="400" Text="{Binding Path=Value, Converter={StaticResource prefixDecimalConverter}}"></TextBox>
-                <TextBox Tag="Tag" VerticalAlignment="Center" Margin="20 10" HorizontalAlignment="Center" Width="400"></TextBox>
-                <TextBox Tag="Message" VerticalAlignment="Center" Margin="20 10" HorizontalAlignment="Center" Width="400"></TextBox>
+                <TextBox Tag="Address" Text="{Binding Address}" VerticalAlignment="Center" Margin="20 10" HorizontalAlignment="Center" Width="400"></TextBox>
+                <TextBox Tag="Value: 10M" VerticalAlignment="Center" Margin="20 10" HorizontalAlignment="Center" Width="400" Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource prefixDecimalConverter}, ValidatesOnExceptions=True}"></TextBox>
+                <TextBox Tag="Tag" Text="{Binding MessageTag}" VerticalAlignment="Center" Margin="20 10" HorizontalAlignment="Center" Width="400"></TextBox>
+                <TextBox Tag="Message" Text="{Binding Message}" VerticalAlignment="Center" Margin="20 10" HorizontalAlignment="Center" Width="400"></TextBox>
+                <TextBlock Margin="20 10" Foreground="#e33" Text="{Binding ErrorText}"></TextBlock>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Command="{Binding SendCommand}" Margin="10 20 10 20" Content="Send" />
                     <Button Style="{StaticResource grayButtonStyle}" Command="{Binding CancelCommand}" Margin="10 20 20 20" Content="Cancel" />

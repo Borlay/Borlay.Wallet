@@ -53,6 +53,29 @@ namespace Borlay.Wallet.Iota
 
             menuItems.First().IsSelected = true;
             this.selectedChanged.SelectedChanged += SelectedChanged_SelectedChanged;
+
+            bundlesModel.ContentItems.CollectionChanged += ContentItems_CollectionChanged;
+        }
+
+        private void ContentItems_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            foreach (var item in e.NewItems)
+            {
+                if (item is BundleItemModel bundleModel)
+                {
+                    if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+                        bundleModel.Rebroadcast += BundleModel_Rebroadcast;
+                    else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+                        bundleModel.Rebroadcast -= BundleModel_Rebroadcast;
+                }
+            }
+        }
+
+        private async void BundleModel_Rebroadcast(BundleItemModel bundleModel)
+        {
+            var transactionItems = bundleModel.BundleDetail.TransactionItems.Select(t => t.Tag).OfType<TransactionItem>().ToArray();
+            if (transactionItems != null && transactionItems.Length > 0)
+                await SendTransactions(transactionItems, true);
         }
 
         private async void WalletModel_NewSend(WalletModel obj)
@@ -146,23 +169,37 @@ namespace Borlay.Wallet.Iota
         public virtual void OpenSend(params AddressItemModel[] addressModels)
         {
             if (Wallet.View is NewSendModel) return;
-            //TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+
             var oldView = Wallet.View;
-            var sendModel = new NewSendModel(Wallet, addressModels, async(m) =>
+            var sendModel = new NewSendModel(Wallet, addressModels, (m) =>
             {
                 SendTransfer(m);
             });
             sendModel.Open();
-            
-            //await tcs.Task;
         }
 
         public async void SendTransfer(NewSendModel sendModel)
         {
             var syncModel = new CancelSyncModel() { Text = "We are about to send your transaction" };
             walletModel.SyncModels.Add(syncModel);
-            await SendTransfer(sendModel, syncModel);
-            walletModel.SyncModels.Remove(syncModel);
+            try
+            {
+                await SendTransfer(sendModel, syncModel);
+                
+            }
+            catch(OperationCanceledException)
+            {
+
+            }
+            catch(Exception e)
+            {
+                sendModel.ErrorText = e.Message;
+                sendModel.Open();
+            }
+            finally
+            {
+                walletModel.SyncModels.Remove(syncModel);
+            }
         }
 
         public async Task SendTransfer(NewSendModel sendModel, CancelSyncModel syncModel)
@@ -173,12 +210,14 @@ namespace Borlay.Wallet.Iota
 
             var addressItems = addressModels.Select(a => a.Tag).OfType<AddressItem>().ToArray();
             var api = CreateIotaClient();
-            syncModel.Text = "Renew the addresses balances";
-            await api.RenewAddresses(addressItems);
-            var value = long.Parse(sendModel.Value.ToString());
-            var filteredAddressItems = addressItems.FilterBalance(value).ToArray();
-            syncModel.Text = "Searching for the remainder";
-            var remainderAddressItem = await GetRemainder(filteredAddressItems.Select(a => a.Address).ToArray(), syncModel.Token);
+
+            long value = 0;
+            if (sendModel.Value.HasValue)
+                value = (long)Convert.ChangeType(sendModel.Value.Value, typeof(long)); // long.Parse(sendModel.Value.ToString());
+
+            if (value < 0)
+                throw new Exception("Value cannot be less than zero");
+
             var transfer = new TransferItem()
             {
                 Address = sendModel.Address,
@@ -186,9 +225,25 @@ namespace Borlay.Wallet.Iota
                 Tag = sendModel.MessageTag,
                 Message = sendModel.Message
             };
-            //api.FindReminderAddress(walletConfiguration.PrivateKey, )
-            var transactions = transfer.CreateTransactions(remainderAddressItem.Address, filteredAddressItems).ToArray();
-            await SendTransactions(transactions, syncModel);
+
+            if (value > 0)
+            {
+                syncModel.Text = "Renew your address balances";
+                await api.RenewAddresses(addressItems);
+
+                var filteredAddressItems = addressItems.FilterBalance(value).ToArray();
+                syncModel.Text = "Searching for the remainder";
+                var remainderAddressItem = await GetRemainder(filteredAddressItems.Select(a => a.Address).ToArray(), syncModel.Token);
+
+
+                var transactions = transfer.CreateTransactions(remainderAddressItem.Address, filteredAddressItems).ToArray();
+                await SendTransactions(transactions, syncModel, true);
+            }
+            else
+            {
+                var transactions = transfer.CreateTransactions().ToArray();
+                await SendTransactions(transactions, syncModel, false);
+            }
             //var transactionItems = await api.SendTransactions(transactions, CancellationToken.None);
             //await RefreshAddressesAsync(addressModels);
         }
@@ -216,14 +271,47 @@ namespace Borlay.Wallet.Iota
             return reminder;
         }
 
-
-        private async Task SendTransactions(TransactionItem[] transactionItems, CancelSyncModel syncModel)
+        private async Task SendTransactions(TransactionItem[] transactionItems, bool rebroadcast)
         {
-            syncModel.Text = "We are sending your transaction";
-            var api = CreateIotaClient();
-            var resultTransactionItems = await api.SendTransactions(transactionItems, syncModel.Token);
-            syncModel.Text = "We are forcing your transaction to confirm";
-            await RebroadcastTransactions(resultTransactionItems, syncModel);
+            var syncModel = new CancelSyncModel() { Text = "We are about to send your transaction" };
+            walletModel.SyncModels.Add(syncModel);
+            try
+            {
+                await SendTransactions(transactionItems, syncModel, rebroadcast);
+
+            }
+            catch (OperationCanceledException)
+            {
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                walletModel.SyncModels.Remove(syncModel);
+            }
+        }
+
+        private async Task SendTransactions(TransactionItem[] transactionItems, CancelSyncModel syncModel, bool rebroadcast)
+        {
+            try
+            {
+                syncModel.Text = "We are sending your transaction";
+                var api = CreateIotaClient();
+                var resultTransactionItems = await api.SendTransactions(transactionItems, syncModel.Token);
+
+                if (rebroadcast)
+                {
+                    syncModel.Text = "We are forcing your transaction to confirm";
+                    await RebroadcastTransactions(resultTransactionItems, syncModel);
+                }
+            }
+            finally
+            {
+                await RefreshKnowAddressesAsync();
+            }
         }
 
         private async Task RebroadcastTransactions(TransactionItem[] transactionItems, CancelSyncModel syncModel)

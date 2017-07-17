@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Borlay.Wallet.Models
 {
@@ -18,6 +19,7 @@ namespace Borlay.Wallet.Models
         {
             this.ActionItems = new ObservableCollection<ButtonModel>();
 
+            this.ActionItems.Add(new IconButtonModel((b) => Clipboard.SetText(Address), IconType.Copy, ColorType.Gray));
             this.ActionItems.Add(new IconButtonModel((b) => sendAction(this), IconType.Sent, ColorType.Blue));
         }
 

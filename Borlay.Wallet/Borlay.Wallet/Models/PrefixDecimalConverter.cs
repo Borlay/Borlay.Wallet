@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace Borlay.Wallet.Models
@@ -28,6 +29,9 @@ namespace Borlay.Wallet.Models
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value == null)
+                return null;
+
             var decValue = (decimal)value;
             var abs = decValue < 0 ? -1 : 1;
             decValue = Math.Abs(decValue);
@@ -51,23 +55,57 @@ namespace Borlay.Wallet.Models
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value is string sValue)
+            try
             {
-                var splited = sValue.Split(' ');
-                var decValue = decimal.Parse(splited[0]);
-                var prefix = splited.Length > 1 ? splited[1] : "";
-
-                if(!string.IsNullOrWhiteSpace(prefix))
+                if (value is string sValue)
                 {
-                    var count = prefixes.Single(p => p.Value == prefix).Key;
-                    for (int i = 0; i < count; i++)
+                    if (string.IsNullOrEmpty(sValue))
+                        return null;
+
+                    var prefix = FindPrefix(sValue);
+                    var decValue = decimal.Parse(prefix.Value);
+
+                    for (int i = 0; i < prefix.Count; i++)
                         decValue *= 1000;
                     return decValue;
                 }
-                return decValue;
+                else
+                    return value;
             }
-            else
-                return value;
+            catch(Exception e)
+            {
+                return new ValidationResult(false, e.Message);
+            }
+        }
+
+        private PrefixResult FindPrefix(string value)
+        {
+            value = value.ToUpper();
+            foreach(var pr in prefixes)
+            {
+                if (value.Contains(pr.Value))
+                {
+                    return new PrefixResult()
+                    {
+                        Count = pr.Key,
+                        Value = value.Replace(pr.Value, ""),
+                    };
+                }
+            }
+
+            return new PrefixResult()
+            {
+                Count = 0,
+                Value = value
+            };
         }
     }
+
+    public class PrefixResult
+    {
+        public int Count { get; set; }
+        public string Value { get; set; }
+    }
+
+    
 }

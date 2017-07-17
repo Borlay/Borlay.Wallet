@@ -427,5 +427,24 @@
   <ItemGroup>
     <Resource Include="Resources\Icons\sent-b-40.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\copy-40.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\down-40.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\down-b-40.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\downFilled-40.png" />
+    <Resource Include="Resources\Icons\downFilled-b-40.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\browser-40.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\replace-40.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

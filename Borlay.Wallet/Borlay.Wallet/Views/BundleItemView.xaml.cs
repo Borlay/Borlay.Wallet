@@ -23,8 +23,16 @@ namespace Borlay.Wallet.Views
         public BundleItemView()
         {
             InitializeComponent();
+        }
 
-            
+        public static readonly DependencyProperty IsConfirmedViewProperty =
+    DependencyProperty.Register(
+    "IsConfirmedView", typeof(bool), typeof(BundleItemView));
+
+        public bool IsConfirmedView
+        {
+            get { return (bool)GetValue(IsConfirmedViewProperty); }
+            set { SetValue(IsConfirmedViewProperty, value); }
         }
     }
 }
