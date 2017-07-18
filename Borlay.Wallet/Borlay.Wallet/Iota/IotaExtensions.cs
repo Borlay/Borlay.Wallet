@@ -10,8 +10,25 @@ using System.Threading.Tasks;
 
 namespace Borlay.Wallet.Iota
 {
-    public static class Extensions
+    public static class IotaExtensions
     {
+        public static string ValidateAddress(string address)
+        {
+            address = address.ToUpper();
+
+            if (string.IsNullOrWhiteSpace(address))
+                throw new Exception("Address should not be empty");
+
+            Borlay.Iota.Library.Utils.InputValidator.CheckAddress(address);
+            if (address.Length == 90)
+            {
+                if (!Borlay.Iota.Library.Utils.Checksum.IsValidChecksum(address))
+                    throw new Exception("Bad address checksum.");
+            }
+
+            return address;
+        }
+
         public static AddressItemModel[] GetAddressModels(this ContentCollectionModel<AddressItemModel> content)
         {
             return content.ContentItems.ToArray();
@@ -43,7 +60,7 @@ namespace Borlay.Wallet.Iota
                 yield return address;
 
                 if (needBalance <= 0)
-                    break;
+                    yield break;
             }
 
             throw new Exception("Not enough balance");

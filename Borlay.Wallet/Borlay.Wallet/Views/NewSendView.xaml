@@ -8,12 +8,15 @@
              d:DesignHeight="500" d:DesignWidth="400" Height="Auto" Width="Auto">
     <Border Style="{StaticResource contentBorderStyle}">
         <StackPanel>
-            <TextBlock Margin="20" FontSize="15">Send money</TextBlock>
+            <TextBlock Margin="30 30 20 0" FontSize="15">Send money</TextBlock>
             <StackPanel HorizontalAlignment="Center" Margin="20">
-                <TextBox Tag="Address" Text="{Binding Address}" VerticalAlignment="Center" Margin="20 10" HorizontalAlignment="Center" Width="400"></TextBox>
-                <TextBox Tag="Value: 10M" VerticalAlignment="Center" Margin="20 10" HorizontalAlignment="Center" Width="400" Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource prefixDecimalConverter}, ValidatesOnExceptions=True}"></TextBox>
-                <TextBox Tag="Tag" Text="{Binding MessageTag}" VerticalAlignment="Center" Margin="20 10" HorizontalAlignment="Center" Width="400"></TextBox>
-                <TextBox Tag="Message" Text="{Binding Message}" VerticalAlignment="Center" Margin="20 10" HorizontalAlignment="Center" Width="400"></TextBox>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBox Tag="Address" Text="{Binding Address, ValidatesOnExceptions=True}" VerticalAlignment="Center" Margin="20 10 2 10" HorizontalAlignment="Left" Width="400"></TextBox>
+                    <ContentControl Content="{Binding AddressPasteButton}"></ContentControl>
+                </StackPanel>
+                <TextBox Tag="Value: 10M" VerticalAlignment="Center" Margin="20 10" HorizontalAlignment="Left" Width="400" Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource prefixDecimalConverter}, ValidatesOnExceptions=True}"></TextBox>
+                <TextBox Tag="Tag" Text="{Binding MessageTag}" VerticalAlignment="Center" Margin="20 10" HorizontalAlignment="Left" Width="400"></TextBox>
+                <TextBox Tag="Message" Text="{Binding Message}" VerticalAlignment="Center" Margin="20 10" HorizontalAlignment="Left" Width="400"></TextBox>
                 <TextBlock Margin="20 10" Foreground="#e33" Text="{Binding ErrorText}"></TextBlock>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Command="{Binding SendCommand}" Margin="10 20 10 20" Content="Send" />

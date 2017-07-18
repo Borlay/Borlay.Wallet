@@ -126,13 +126,6 @@ namespace Borlay.Wallet.Iota
             };
             yield return new TabItem()
             {
-                Name = "In-Out",
-                Selected = (t) =>
-                    Wallet.View = null,
-                IsSelected = false
-            };
-            yield return new TabItem()
-            {
                 Name = "Transactions",
                 Selected = (t) => Wallet.View = bundlesModel, // OpenTransactions()
             };
@@ -174,7 +167,10 @@ namespace Borlay.Wallet.Iota
             var sendModel = new NewSendModel(Wallet, addressModels, (m) =>
             {
                 SendTransfer(m);
-            });
+            })
+            {
+                AddressValidation = a => IotaExtensions.ValidateAddress(a)
+            };
             sendModel.Open();
         }
 
@@ -218,9 +214,15 @@ namespace Borlay.Wallet.Iota
             if (value < 0)
                 throw new Exception("Value cannot be less than zero");
 
+            var addressToSend = sendModel.Address;
+            addressToSend = IotaExtensions.ValidateAddress(addressToSend);
+            if(addressToSend.Length == 90)
+                addressToSend = Borlay.Iota.Library.Utils.Checksum.RemoveChecksum(addressToSend);
+            
+
             var transfer = new TransferItem()
             {
-                Address = sendModel.Address,
+                Address = addressToSend,
                 Value = value,
                 Tag = sendModel.MessageTag,
                 Message = sendModel.Message
@@ -441,7 +443,7 @@ namespace Borlay.Wallet.Iota
 
         private AddressItemModel CreateAddressItemModel(Borlay.Iota.Library.Models.AddressItem addressItem)
         {
-            var addressItemModel = new AddressItemModel((a) => OpenSend(a)) { Tag = addressItem };
+            var addressItemModel = new AddressItemModel((a) => OpenSend(a), a => Borlay.Iota.Library.Utils.Checksum.AddChecksum(a)) { Tag = addressItem };
             addressItem.BindTo(addressItemModel, d => d.Address, m => m.Address);
             addressItem.BindTo(addressItemModel, d => d.Balance, m => m.Balance);
             addressItem.Changed(a => a.Balance, (a, v) => RefreshBalanceStats());

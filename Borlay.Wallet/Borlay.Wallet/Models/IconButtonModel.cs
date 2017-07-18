@@ -68,6 +68,7 @@ namespace Borlay.Wallet.Models
         Down,
         DownFilled,
         Browser,
-        Replace
+        Replace,
+        Paste
     }
 }

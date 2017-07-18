@@ -68,7 +68,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ParallelExtensions.cs" />
-    <Compile Include="Iota\Extensions.cs" />
+    <Compile Include="Iota\IotaExtensions.cs" />
     <Compile Include="Iota\IotaWalletManager.cs" />
     <Compile Include="Iota\IotaWalletTransactionManager.cs" />
     <Compile Include="Iota\TransferAddresses.cs" />
@@ -445,6 +445,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icons\replace-40.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\paste-40.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

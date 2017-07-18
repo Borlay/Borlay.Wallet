@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Borlay.Wallet.Models
 {
@@ -27,6 +28,7 @@ namespace Borlay.Wallet.Models
         public NewSendModel(IView view, AddressItemModel[] addresses, Action<NewSendModel> sendTransfer)
         {
             this.view = view;
+            this.AddressValidation = null;
             this.Addresses = new ObservableCollection<AddressItemModel>(addresses);
             this.SendCommand = new ActionCommand(o =>
             {
@@ -47,6 +49,12 @@ namespace Borlay.Wallet.Models
                 
             });
             this.CancelCommand = new ActionCommand(o => Cancel());
+            this.AddressPasteButton = new IconButtonModel(o =>
+            {
+                var text= Clipboard.GetText();
+                if(!string.IsNullOrWhiteSpace(text))
+                    Address = text;
+            }, IconType.Paste);
         }
 
         public void Open()
@@ -62,6 +70,8 @@ namespace Borlay.Wallet.Models
                 this.view.View = oldView;
         }
 
+        public Func<string, string> AddressValidation { get; set; }
+
         public string Address
         {
             get
@@ -70,9 +80,9 @@ namespace Borlay.Wallet.Models
             }
             set
             {
-                if(this.address != value)
+                //if(this.address != value)
                 {
-                    this.address = value;
+                    this.address = AddressValidation?.Invoke(value);
                     NotifyPropertyChanged();
                 }
             }
@@ -142,6 +152,9 @@ namespace Borlay.Wallet.Models
                 }
             }
         }
+
+        public IconButtonModel AddressPasteButton { get; private set; }
+
         public IActionCommand SendCommand { get; private set; }
         public IActionCommand CancelCommand { get; private set; }
     }

@@ -14,13 +14,17 @@ namespace Borlay.Wallet.Models
         private decimal balance;
         private decimal incomingBalance;
         private decimal outgoingBalance;
+        private readonly Func<string, string> addressWithCheckSumConverter;
 
-        public AddressItemModel(Action<AddressItemModel> sendAction)
+        public AddressItemModel(Action<AddressItemModel> sendAction, Func<string, string> addressWithCheckSumConverter)
         {
+            this.addressWithCheckSumConverter = addressWithCheckSumConverter;
             this.ActionItems = new ObservableCollection<ButtonModel>();
 
-            this.ActionItems.Add(new IconButtonModel((b) => Clipboard.SetText(Address), IconType.Copy, ColorType.Gray));
+            this.ActionItems.Add(new IconButtonModel((b) => Clipboard.SetText(AddressWithChecksum), IconType.Copy, ColorType.Gray));
             this.ActionItems.Add(new IconButtonModel((b) => sendAction(this), IconType.Sent, ColorType.Blue));
+
+            
         }
 
         public void SetTransactions()
@@ -38,11 +42,30 @@ namespace Borlay.Wallet.Models
             {
                 if (this.address != value)
                 {
+                    this.AddressWithChecksum = addressWithCheckSumConverter(value);
                     this.address = value;
                     NotifyPropertyChanged();
                 }
             }
         }
+
+        private string addressWithChecksum;
+        public string AddressWithChecksum
+        {
+            get
+            {
+                return addressWithChecksum;
+            }
+            private set
+            {
+                if (this.addressWithChecksum != value)
+                {
+                    this.addressWithChecksum = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
 
         private bool hasWithdrawal = false;
         public bool HasWithdrawal
