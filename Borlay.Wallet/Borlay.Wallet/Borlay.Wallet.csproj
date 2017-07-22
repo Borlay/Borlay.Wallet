@@ -38,12 +38,16 @@
     <Reference Include="Borlay.Iota.Library, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Borlay.Iota.Library.1.0.7\lib\netstandard1.1\Borlay.Iota.Library.dll</HintPath>
     </Reference>
+    <Reference Include="Gma.QrCodeNet.Encoding, Version=0.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\QrCode.Net.0.4.0.0\lib\net45\Gma.QrCodeNet.Encoding.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -67,6 +71,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Balances\BalanceConverter.cs" />
+    <Compile Include="Models\PaperModel.cs" />
     <Compile Include="ParallelExtensions.cs" />
     <Compile Include="Iota\IotaExtensions.cs" />
     <Compile Include="Iota\IotaWalletManager.cs" />
@@ -155,6 +161,9 @@
     </Compile>
     <Compile Include="Views\NewSendView.xaml.cs">
       <DependentUpon>NewSendView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PaperView.xaml.cs">
+      <DependentUpon>PaperView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ScanAddressesProgressView.xaml.cs">
       <DependentUpon>ScanAddressesProgressView.xaml</DependentUpon>
@@ -322,6 +331,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NewSendView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PaperView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -91,8 +91,12 @@
     <DataTemplate DataType="{x:Type model:NewSendModel}">
         <view:NewSendView />
     </DataTemplate>
-    
-    
+
+    <DataTemplate DataType="{x:Type model:PaperModel}">
+        <view:PaperView />
+    </DataTemplate>
+
+
     <DataTemplate DataType="{x:Type model:ButtonModel}">
         <Button Command="{Binding ButtonClick, IsAsync=True}" Content="{Binding Content}" />
     </DataTemplate>

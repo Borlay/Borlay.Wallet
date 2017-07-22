@@ -93,7 +93,17 @@ namespace Borlay.Wallet.Storage
 
             ValidateAccount(account, passwordHash);
 
+            DecryptWallets(passwordHash, account.Wallets);
+            var wallets = account.Wallets.ToList();
 
+            wallets.RemoveAll(w => w.PrivateKey == wallet.PrivateKey);
+
+            wallets.Add(wallet);
+            account.Wallets = wallets.ToArray();
+
+            EncryptWallets(passwordHash, account.Wallets);
+            SaveAccounts(accounts);
+            DecryptWallets(passwordHash, account.Wallets);
         }
 
         public void EncryptWallets(string passwordHash, params WalletConfiguration[] wallets)

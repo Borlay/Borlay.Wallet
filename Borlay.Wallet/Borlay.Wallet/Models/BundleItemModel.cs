@@ -26,10 +26,7 @@ namespace Borlay.Wallet.Models
             this.rebroadcastButton = new IconButtonModel(b => OnRebroadcast(), IconType.Replace, ColorType.Gray);
 
             this.ActionItems.Add(new IconButtonModel((b) => OpenInBrowser(), IconType.Browser, ColorType.Gray));
-            //this.ActionItems.Add(new IconButtonModel((b) => Clipboard.SetText(base.Hash), IconType.Copy, ColorType.Gray));
             this.ActionItems.Add(downButton);
-
-            
         }
 
         public void OpenInBrowser()

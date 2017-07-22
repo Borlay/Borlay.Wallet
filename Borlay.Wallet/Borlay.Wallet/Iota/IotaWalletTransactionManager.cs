@@ -31,8 +31,7 @@ namespace Borlay.Wallet.Iota
                     ownTransactions.Add(t);
             }
 
-            var api = CreateIotaClient();
-            var transactions = await api.GetTransactionItems(transactionHashes);
+            var transactions = await GetTransactionItems(transactionHashes);
             var bundleHashes = transactions.Select(b => b.Bundle).Distinct().ToArray();
             await UpdateBundles(bundleHashes);
             return transactions;
@@ -52,14 +51,28 @@ namespace Borlay.Wallet.Iota
 
         public async Task UpdateBundles(string[] bundleHashes)
         {
-            var api = CreateIotaClient();
             foreach (var bundleHash in bundleHashes)
             {
-                var transactions = await api.GetBundleTransactionItems(bundleHash);
-                //if(transactions.Any(t => t.Persistence && Math.Abs(Int64.Parse(t.Value)) > 0))
+                var transactions = await GetBundleTransactionItems(bundleHash);
                 var bundle = bundleItems.UpdateBundleItems(bundleHash, transactions);
                 AppendTransactions(bundle.BundleDetail.TransactionItems.ToArray());
             }
+        }
+
+        private async Task<TransactionItem[]> GetTransactionItems(params string[] transactionHashes)
+        {
+            await TaskIota.Yield().ConfigureAwait(false);
+            var api = CreateIotaClient();
+            var transactions = await api.GetTransactionItems(transactionHashes);
+            return transactions;
+        }
+
+        private async Task<TransactionItem[]> GetBundleTransactionItems(string bundleHash)
+        {
+            await TaskIota.Yield().ConfigureAwait(false);
+            var api = CreateIotaClient();
+            var transactions = await api.GetBundleTransactionItems(bundleHash);
+            return transactions;
         }
 
         public void Clear()

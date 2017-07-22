@@ -45,11 +45,15 @@ namespace Borlay.Wallet.Models
                 count++;
             }
 
+            decValue *= abs;
+
             if (count == 0)
-                return value;
+            {
+                //var sValue = String.Format("{0:0.000}", value);
+                return Math.Round(decValue, 3);
+            }
 
             var prefix = prefixes[count];
-            decValue *= abs;
             return $"{decValue} {prefix}";
         }
 

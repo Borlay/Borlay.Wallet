@@ -18,42 +18,44 @@
         </Style>
     </UserControl.Style>
     <Grid>
-        <!--<local:BundleItemView IsConfirmedView="{Binding IsConfirmed, Mode=OneWay}" />-->
-        <!--<local:BundleItemView IsConfirmedView="True" />-->
-    <Border Background="Transparent" BorderThickness="0 0 0 1" BorderBrush="#ddd">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Border Grid.Row="0" Background="Transparent">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="120" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="200" />
-                    </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0">
-                        <TextBlock Margin="15 0" FontSize="14" Foreground="#292" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Path=Balance, Converter={StaticResource prefixDecimalConverter}}" />
-                    </Border>
-                    <Border Grid.Column="1" >
-                        <TextBlock Margin="10 0" FontSize="14" Foreground="#888" HorizontalAlignment="Left" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"  Text="{Binding Address}" />
-                    </Border>
-                    <StackPanel Margin="20 0" Grid.Column="2"  VerticalAlignment="Center" HorizontalAlignment="Right">
-                        <ItemsControl ItemsSource="{Binding ActionItems}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
-                    </StackPanel>
-                </Grid>
-            </Border>
-            <Border Grid.Row="1">
-                <ContentControl Content="{Binding VisibleBundleDetail}"></ContentControl>
-            </Border>
-        </Grid>
-    </Border>
+        <Border Background="Transparent" BorderThickness="0 0 0 1" BorderBrush="#ddd">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" Background="Transparent">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="140" />
+                            <ColumnDefinition Width="170" />
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0">
+                            <TextBlock Margin="15 0" FontSize="14" Foreground="#292" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Path=Balance, Converter={StaticResource prefixDecimalConverter}}" />
+                        </Border>
+                        <Border Grid.Column="1" >
+                            <TextBlock Margin="10 0" FontSize="14" Foreground="#888" HorizontalAlignment="Left" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"  Text="{Binding Address}" />
+                        </Border>
+                        <Border Grid.Column="2" >
+                            <TextBlock Margin="5 0" FontSize="12" Foreground="#aaa" HorizontalAlignment="Left" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"  Text="{Binding Path=DateTime, StringFormat='dd-MM-yyyy HH:mm'}" />
+                        </Border>
+                        <StackPanel Margin="20 0" Grid.Column="3"  VerticalAlignment="Center" HorizontalAlignment="Right">
+                            <ItemsControl ItemsSource="{Binding ActionItems}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <Border Grid.Row="1">
+                    <ContentControl Content="{Binding VisibleBundleDetail}"></ContentControl>
+                </Border>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

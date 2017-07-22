@@ -49,6 +49,11 @@ namespace Borlay.Wallet.Storage
             }
         }
 
+        public SecureString GetSecurePrivateKey()
+        {
+            return securePrivateKey;
+        }
+
         public string Name { get; set; }
 
         public WalletType WalletType { get; set; }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Borlay.Wallet.Storage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security;
@@ -42,4 +43,14 @@ namespace Borlay.Wallet.Models.General
             }
         }
     }
+
+    public static class UserNameCredentialExtensions
+    {
+        public static string GetPasswordHash(this IUserNameCredentials credentials)
+        {
+            var passwordHash = Security.EncryptPassword(credentials.Password.GetString(), "");
+            return passwordHash;
+        }
+    }
+
 }

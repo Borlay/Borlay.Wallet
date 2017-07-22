@@ -75,12 +75,15 @@ namespace Borlay.Wallet.Iota
 
         public static TransactionItemModel Update(this TransactionItemModel model, TransactionItem transactionItem)
         {
+            var dateTime = new DateTime(1970, 1, 1);
+            dateTime = dateTime.AddMilliseconds(long.Parse(transactionItem.Timestamp));
+
             model.Hash = transactionItem.Hash;
             model.Address = transactionItem.Address;
             model.Index = int.Parse(transactionItem.CurrentIndex);
             model.Balance = Int64.Parse(transactionItem.Value);
             model.IsConfirmed = transactionItem.Persistence;
-            model.DateTime = new DateTime(long.Parse(transactionItem.Timestamp));
+            model.DateTime = dateTime;
             model.TransactionTag = transactionItem.Tag;
             model.Tag = transactionItem;
             return model;

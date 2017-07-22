@@ -45,7 +45,7 @@ namespace Borlay.Wallet
             {
                 try
                 {
-                    var account = await Login(model.UserName, model.Password);
+                    var account = await Login(model);
                     await Loged(account);
 
                     this.CreateWalletButton = new IconButtonModel((b) => CreateWalletAsync(model), IconType.Plus);
@@ -103,7 +103,8 @@ namespace Borlay.Wallet
                         //}
                     }
 
-                    //storageManager.SaveAccount
+                    var passwordHash = credentials.GetPasswordHash();
+                    storageManager.SaveWallet(credentials.UserName, passwordHash, wallet);
 
                     tabItem.Selected = (t) => View = walletProvider.Wallet;
                     Header.TabItems.Add(tabItem);
@@ -158,14 +159,14 @@ namespace Borlay.Wallet
                 View = null;
         }
 
-        private async Task<AccountConfiguration> Login(string userName, SecureString password)
+        private async Task<AccountConfiguration> Login(IUserNameCredentials credentials)
         {
-            var passwordHash = Security.EncryptPassword(password.GetString(), "");
+            var passwordHash = credentials.GetPasswordHash();
 
-            var account = storageManager.GetAccount(userName, passwordHash);
+            var account = storageManager.GetAccount(credentials.UserName, passwordHash);
             if(account == null)
             {
-                account = await CreateAccount(userName, passwordHash);
+                account = await CreateAccount(credentials.UserName, passwordHash);
                 return account;
             }
             else
