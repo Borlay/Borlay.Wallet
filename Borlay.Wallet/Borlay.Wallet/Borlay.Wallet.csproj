@@ -72,6 +72,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Balances\BalanceConverter.cs" />
+    <Compile Include="Models\DonateModel.cs" />
+    <Compile Include="Models\IOpenDonation.cs" />
+    <Compile Include="Models\IWalletManager.cs" />
     <Compile Include="Models\PaperModel.cs" />
     <Compile Include="ParallelExtensions.cs" />
     <Compile Include="Iota\IotaExtensions.cs" />
@@ -149,6 +152,9 @@
     </Compile>
     <Compile Include="Views\DefaultSyncView.xaml.cs">
       <DependentUpon>DefaultSyncView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DonateView.xaml.cs">
+      <DependentUpon>DonateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\General\ConfirmPasswordView.xaml.cs">
       <DependentUpon>ConfirmPasswordView.xaml</DependentUpon>
@@ -315,6 +321,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DefaultSyncView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DonateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

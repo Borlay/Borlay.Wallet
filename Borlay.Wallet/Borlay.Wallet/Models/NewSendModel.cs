@@ -82,7 +82,10 @@ namespace Borlay.Wallet.Models
             {
                 //if(this.address != value)
                 {
-                    this.address = AddressValidation?.Invoke(value);
+                    if(!string.IsNullOrEmpty(value))
+                        value = AddressValidation?.Invoke(value);
+
+                    this.address = value;
                     NotifyPropertyChanged();
                 }
             }

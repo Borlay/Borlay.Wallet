@@ -14,10 +14,10 @@ namespace Borlay.Wallet.Iota
     {
         public static string ValidateAddress(string address)
         {
-            address = address.ToUpper();
-
             if (string.IsNullOrWhiteSpace(address))
                 throw new Exception("Address should not be empty");
+
+            address = address.ToUpper();
 
             Borlay.Iota.Library.Utils.InputValidator.CheckAddress(address);
             if (address.Length == 90)

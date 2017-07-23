@@ -34,17 +34,20 @@ namespace Borlay.Wallet
         {
             InitializeComponent();
 
-            this.DataContext = this;
+            Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+
+            
             this.syncModel = new SyncModel(this);
             // to remember ListCollectionView
 
             var accounts = storageManager.GetAccounts();
             var lastAccount = accounts?.Accounts?.OrderByDescending(o => o.LastLoginDate).FirstOrDefault();
 
-            this.view = new UserLoginModel(async (model) =>
+            this.View = new UserLoginModel(async (model) =>
             {
                 try
                 {
+                    ValidateCredentials(model);
                     var account = await Login(model);
                     await Loged(account);
 
@@ -62,6 +65,31 @@ namespace Borlay.Wallet
             };
 
             Header = new WalletTabsModel();
+
+            DonateCommand = new ActionCommand(o => (this.View as IOpenDonation)?.OpenDonation());
+
+            this.DataContext = this;
+        }
+
+        private void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show(e.Exception.Message, "Exception");
+            e.Handled = true;
+        }
+
+        private void ValidateCredentials(IUserNameCredentials credentials)
+        {
+            if (string.IsNullOrWhiteSpace(credentials.UserName))
+                throw new Exception("User name should be set");
+
+            if (credentials.UserName.Length < 3)
+                throw new Exception($"User name length cannot be less than 3");
+
+            if (credentials.Password == null)
+                throw new Exception($"Password should be set");
+
+            if (credentials.Password.Length < 4)
+                throw new Exception("Password length cannot be less than 4");
         }
 
         private async Task CreateWalletAsync(IUserNameCredentials credentials)
@@ -276,6 +304,8 @@ namespace Borlay.Wallet
                 NotifyPropertyChanged();
             }
         }
+
+        public ICommand DonateCommand { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged = (s, e) => { };
 

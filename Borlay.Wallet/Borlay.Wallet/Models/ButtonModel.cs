@@ -40,6 +40,23 @@ namespace Borlay.Wallet.Models
             }
         }
 
+        private string tipText;
+        public string TipText
+        {
+            get
+            {
+                return tipText;
+            }
+            set
+            {
+                if (this.tipText != value)
+                {
+                    this.tipText = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         public IActionCommand ButtonClick
         {
             get
