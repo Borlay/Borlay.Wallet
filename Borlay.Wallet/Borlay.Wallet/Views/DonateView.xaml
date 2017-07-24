@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Borlay.Wallet.Views"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" MaxWidth="640">
-    <Border Style="{StaticResource contentBorderStyle}" VerticalAlignment="Center" Margin="0 0 0 20" HorizontalAlignment="Center">
+    <Border Style="{StaticResource contentBorderStyle}" VerticalAlignment="Center" Margin="0 0 0 10" HorizontalAlignment="Center">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
