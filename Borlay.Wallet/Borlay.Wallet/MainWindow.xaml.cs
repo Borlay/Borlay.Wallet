@@ -34,42 +34,49 @@ namespace Borlay.Wallet
         {
             InitializeComponent();
 
-            Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
-
-            
-            this.syncModel = new SyncModel(this);
-            // to remember ListCollectionView
-
-            var accounts = storageManager.GetAccounts();
-            var lastAccount = accounts?.Accounts?.OrderByDescending(o => o.LastLoginDate).FirstOrDefault();
-
-            this.View = new UserLoginModel(async (model) =>
+            try
             {
-                try
-                {
-                    ValidateCredentials(model);
-                    var account = await Login(model);
-                    await Loged(account);
+                Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
 
-                    this.CreateWalletButton = new IconButtonModel((b) => CreateWalletAsync(model), IconType.Plus);
 
-                    return null;
-                }
-                catch (Exception e)
+                this.syncModel = new SyncModel(this);
+                // to remember ListCollectionView
+
+                var accounts = storageManager.GetAccounts();
+                var lastAccount = accounts?.Accounts?.OrderByDescending(o => o.LastLoginDate).FirstOrDefault();
+
+                this.View = new UserLoginModel(async (model) =>
                 {
-                    return e.Message;
-                }
-            }, () => Environment.Exit(0))
+                    try
+                    {
+                        ValidateCredentials(model);
+                        var account = await Login(model);
+                        await Loged(account);
+
+                        this.CreateWalletButton = new IconButtonModel((b) => CreateWalletAsync(model), IconType.Plus);
+
+                        return null;
+                    }
+                    catch (Exception e)
+                    {
+                        return e.Message;
+                    }
+                }, () => Environment.Exit(0))
+                {
+                    UserName = lastAccount?.UserName
+                };
+
+                Header = new WalletTabsModel();
+
+                DonateCommand = new ActionCommand(o => (this.View as IOpenDonation)?.OpenDonation());
+
+                this.SettingsButton = new IconButtonModel((b) => MessageBox.Show("Comming soon. Check donation details", "Comming"), IconType.Settings);
+            }
+            catch(Exception e)
             {
-                UserName = lastAccount?.UserName
-            };
-
-            Header = new WalletTabsModel();
-
-            DonateCommand = new ActionCommand(o => (this.View as IOpenDonation)?.OpenDonation());
-
-            this.SettingsButton = new IconButtonModel((b) => MessageBox.Show("Comming soon. Check donation details", "Comming"), IconType.Settings);
-
+                MessageBox.Show(e.Message);
+                throw;
+            }
             this.DataContext = this;
         }
 

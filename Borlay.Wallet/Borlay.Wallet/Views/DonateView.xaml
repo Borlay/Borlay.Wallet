@@ -33,7 +33,7 @@
                         <TextBlock Margin="30 0" Foreground="#666" TextWrapping="Wrap">
                         - Settings. Like a node host configuration, rename/delete existing wallet and etc. <LineBreak/>
                         - Remote backup system (by your choice) to access the same wallet from other devices. <LineBreak/>
-                        - I'll run a full node to let you run the POW on my own server. <LineBreak />
+                        - POW in GPU. <LineBreak />
                         - Wallet healty management to see not confirmed transactions and double spending. <LineBreak/>
                         - Configurable notifications about the price changes in eur/usd. <LineBreak/>
                         - Transactions and addresses filter/search. <LineBreak/>
