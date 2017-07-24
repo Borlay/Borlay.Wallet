@@ -105,7 +105,7 @@ namespace Borlay.Wallet
                 var syncContent = await syncModel.EnterSync();
                 try
                 {
-                    syncContent.SetTextView("Your wallet is about to ready. We are creating the first address for you.");
+                    syncContent.SetTextView("Your wallet is almost ready. We are creating the first address for you.");
 
                     var tabItem = new Models.TabItem()
                     {
@@ -119,16 +119,6 @@ namespace Borlay.Wallet
                     if (wallet.IsImported)
                     {
                         walletProvider.InitializeAsync(true);
-                        //var cancelSync = syncContent
-                        //    .SetCancelView("Since you are creating your wallet with an existing key we area searching for addresses. You can cancel if you know that there is no addresses.");
-                        //try
-                        //{
-                            
-                        //}
-                        //catch(OperationCanceledException)
-                        //{
-                        //    // do nothing
-                        //}
                     }
 
                     var passwordHash = credentials.GetPasswordHash();
