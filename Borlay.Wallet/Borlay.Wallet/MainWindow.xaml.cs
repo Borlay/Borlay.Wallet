@@ -68,6 +68,8 @@ namespace Borlay.Wallet
 
             DonateCommand = new ActionCommand(o => (this.View as IOpenDonation)?.OpenDonation());
 
+            this.SettingsButton = new IconButtonModel((b) => MessageBox.Show("Comming soon. Check donation details", "Comming"), IconType.Settings);
+
             this.DataContext = this;
         }
 
@@ -294,6 +296,8 @@ namespace Borlay.Wallet
                 NotifyPropertyChanged();
             }
         }
+
+        public IconButtonModel SettingsButton { get; private set; }
 
         public ICommand DonateCommand { get; private set; }
 
