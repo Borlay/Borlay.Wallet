@@ -20,7 +20,7 @@ It is recomended to install the wallet using [Wallet ClickOnce](http://www.walle
 
 ### Security
 
-This wallet helps you to store and backup your seed in secure way. Your seed is encrypted with your password and stored in your local pc it isn't send anywhere else. Awlays backup the wallet configuration file and the seed as well (Go to Paper menu in wallet) and make sure you keep it safe. And remember - we cannot recover your wallet if you forget your password except you have plain seed.
+This wallet helps you to store and backup your seed in a secure way. Your seed is encrypted with your password and stored in your local pc it isn't send anywhere else. Awlays backup the wallet configuration file and the seed as well (Go to Paper menu in wallet) and make sure you keep it safe. And remember - we cannot recover your wallet if you forget your password except you have plain seed.
 
 ### Print screens
 
