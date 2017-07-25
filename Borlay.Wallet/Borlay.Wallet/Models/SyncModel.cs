@@ -58,7 +58,7 @@ namespace Borlay.Wallet.Models
         Task<SyncContent> EnterSync();
     }
 
-    public class SyncContent : IDisposable //, IEnterSync
+    public class SyncContent : IDisposable
     {
         private readonly Action dispose;
         private readonly ISyncView syncView;

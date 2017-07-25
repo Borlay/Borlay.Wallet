@@ -119,7 +119,7 @@
     <Compile Include="Models\IOpenDonation.cs" />
     <Compile Include="Models\IWalletManager.cs" />
     <Compile Include="Models\PaperModel.cs" />
-    <Compile Include="ParallelExtensions.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Iota\IotaExtensions.cs" />
     <Compile Include="Iota\IotaWalletManager.cs" />
     <Compile Include="Iota\IotaWalletTransactionManager.cs" />

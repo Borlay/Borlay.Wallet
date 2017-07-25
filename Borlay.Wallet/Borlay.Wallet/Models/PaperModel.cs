@@ -44,18 +44,18 @@ namespace Borlay.Wallet.Models
             qrEncoder.TryEncode(qrText, out qrCode);
             GraphicsRenderer renderer = new GraphicsRenderer(new FixedModuleSize(4, QuietZoneModules.Four));
 
-            Stream memoryStream = new MemoryStream();
-            renderer.WriteToStream(qrCode.Matrix, ImageFormat.Png, memoryStream);
+            using (Stream memoryStream = new MemoryStream())
+            {
+                renderer.WriteToStream(qrCode.Matrix, ImageFormat.Png, memoryStream);
+                memoryStream.Position = 0;
 
-            // very important to reset memory stream to a starting position, otherwise you would get 0 bytes returned
-            memoryStream.Position = 0;
-
-            BitmapImage bi = new BitmapImage();
-            bi.BeginInit();
-            bi.StreamSource = memoryStream;
-            bi.CacheOption = BitmapCacheOption.OnLoad;
-            bi.EndInit();
-            QRImage = bi; //A WPF Image control
+                BitmapImage bi = new BitmapImage();
+                bi.BeginInit();
+                bi.StreamSource = memoryStream;
+                bi.CacheOption = BitmapCacheOption.OnLoad;
+                bi.EndInit();
+                QRImage = bi; 
+            }
         }
 
         private object qrImage;

@@ -9,9 +9,7 @@ namespace Borlay.Wallet.Models
     public interface IActionCommand : ICommand
     {
         event Action<IActionCommand, bool> ExecutingChanged;
-
         void SetCanExecute(bool canExecute);
-        //void EnabledGroup(bool enabledGroup);
     }
 
     public class ActionCommandAsync : IActionCommand
@@ -74,15 +72,6 @@ namespace Borlay.Wallet.Models
                 RaiseCanExecuteChanged();
             }
         }
-
-        //public void EnabledGroup(bool enabledGroup)
-        //{
-        //    if (this.enabledGroup != enabledGroup)
-        //    {
-        //        this.enabledGroup = enabledGroup;
-        //        RaiseCanExecuteChanged();
-        //    }
-        //}
 
         public void RaiseCanExecuteChanged()
         {

@@ -27,11 +27,6 @@ namespace Borlay.Wallet.Models
             
         }
 
-        public void SetTransactions()
-        {
-
-        }
-
         public string Address
         {
             get

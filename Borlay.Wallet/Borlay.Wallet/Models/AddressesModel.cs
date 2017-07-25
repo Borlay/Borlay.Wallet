@@ -12,11 +12,6 @@ namespace Borlay.Wallet.Models
     {
         public AddressesModel()
         {
-            //this.ContentItems = new CollectionModel<AddressItemModel>();
-            //this.ActionItems = new ObservableCollection<IconButtonModel>();
-
-            //this.ActionItems.Add(new IconButtonModel(IconType.Restart));
-            //this.ActionItems.Add(new IconButtonModel(IconType.Plus));
         }
 
         

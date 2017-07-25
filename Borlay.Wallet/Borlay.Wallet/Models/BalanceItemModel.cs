@@ -85,7 +85,5 @@ namespace Borlay.Wallet.Models
                 }
             }
         }
-
-        //public string Sufix { get; set; }
     }
 }

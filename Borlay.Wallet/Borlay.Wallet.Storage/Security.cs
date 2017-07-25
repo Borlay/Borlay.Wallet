@@ -21,10 +21,6 @@ namespace Borlay.Wallet.Storage
 
         public static string EncryptPassword(string password, string saltText)
         {
-
-            // Convert the plain string pwd into bytes
-            //byte[] salt = BitConverter.GetBytes(saltText); // Encoding.UTF8.GetBytes(saltText);
-
             var salt = GetBytes(saltText);
             return EncryptPassword(password, salt);
         }
@@ -42,8 +38,8 @@ namespace Borlay.Wallet.Storage
             System.Security.Cryptography.HashAlgorithm hashAlgo = new System.Security.Cryptography.SHA256Managed();
             byte[] hash = hashAlgo.ComputeHash(combinedBytes);
 
-            var hashString = GetString(hash); // Convert.ToBase64String(hash);
-            var saltString = GetString(salt); // Convert.ToBase64String(salt);
+            var hashString = GetString(hash); 
+            var saltString = GetString(salt); 
 
             var passwordHash = string.IsNullOrWhiteSpace(saltString) ? hashString : $"{hashString}.{saltString}";
 
@@ -52,18 +48,6 @@ namespace Borlay.Wallet.Storage
 
             if (hashString != hashString2)
                 throw new SecurityException("Hashes are not equal. There is some bug.");
-
-
-            // Append the salt to the hash
-            //byte[] hashPlusSalt = new byte[hash.Length + salt.Length];
-            //System.Buffer.BlockCopy(hash, 0, hashPlusSalt, 0, hash.Length);
-            //System.Buffer.BlockCopy(salt, 0, hashPlusSalt, hash.Length, salt.Length);
-
-            ////string passwordHash = Encoding.UTF8.GetString(hashPlusSalt);
-
-            //var passwordHash = Convert.ToBase64String(hashPlusSalt);
-            //var bytesBack = Convert.FromBase64String(base64);
-
 
             return passwordHash;
         }
@@ -82,7 +66,6 @@ namespace Borlay.Wallet.Storage
                 bytes.Add(Convert.ToByte(b, 16));
             }
             return bytes.ToArray();
-            //byte[] data = value.Split('-').Select(b => Convert.ToByte(b, 16)).ToArray();
         }
 
         public static string GetString(byte[] bytes)
@@ -94,8 +77,6 @@ namespace Borlay.Wallet.Storage
 
         public static bool IsPasswordValid(string password, string hash)
         {
-            //var saltIndex = hash.Length - 64;
-            //var saltText = hash.Substring(saltIndex);
             var saltText = hash.Split('.')[1];
             var goodHash = EncryptPassword(password, saltText);
 
@@ -138,14 +119,10 @@ namespace Borlay.Wallet.Storage
                                 var saltString = GetString(saltStringBytes);
                                 var ivString = GetString(ivStringBytes);
                                 var hashString = GetString(memoryStream.ToArray());
-
-                                //cipherTextBytes = cipherTextBytes.Concat(ivStringBytes).ToArray();
-                                //cipherTextBytes = cipherTextBytes.Concat().ToArray();
                                 memoryStream.Close();
                                 cryptoStream.Close();
 
                                 return $"{hashString}.{ivString}.{saltString}";
-                                //return Convert.ToBase64String(cipherTextBytes);
                             }
                         }
                     }
@@ -163,16 +140,6 @@ namespace Borlay.Wallet.Storage
             var cipherTextBytes = GetBytes(hashString);
             var ivStringBytes = GetBytes(ivString);
             var saltStringBytes = GetBytes(saltString);
-
-            //// Get the complete stream of bytes that represent:
-            //// [32 bytes of Salt] + [32 bytes of IV] + [n bytes of CipherText]
-            //var cipherTextBytesWithSaltAndIv = Convert.FromBase64String(cipherText);
-            //// Get the saltbytes by extracting the first 32 bytes from the supplied cipherText bytes.
-            //var saltStringBytes = cipherTextBytesWithSaltAndIv.Take(Keysize / 8).ToArray();
-            //// Get the IV bytes by extracting the next 32 bytes from the supplied cipherText bytes.
-            //var ivStringBytes = cipherTextBytesWithSaltAndIv.Skip(Keysize / 8).Take(Keysize / 8).ToArray();
-            //// Get the actual cipher text bytes by removing the first 64 bytes from the cipherText string.
-            //var cipherTextBytes = cipherTextBytesWithSaltAndIv.Skip((Keysize / 8) * 2).Take(cipherTextBytesWithSaltAndIv.Length - ((Keysize / 8) * 2)).ToArray();
 
             using (var password = new Rfc2898DeriveBytes(passPhrase, saltStringBytes, DerivationIterations))
             {

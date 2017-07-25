@@ -29,7 +29,7 @@ namespace Borlay.Wallet.Balances
             decimal rate = 0;
             decimal.TryParse(marketCap.price_eur.Replace('.', ','), out rate);
 
-            decimal value = convertValue * rate / 1000000;
+            decimal value = convertValue * rate / 1000000; // todo change that divide hardcode
             return value;
         }
 

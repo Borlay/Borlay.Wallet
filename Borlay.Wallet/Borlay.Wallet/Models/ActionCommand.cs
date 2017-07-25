@@ -16,7 +16,6 @@ namespace Borlay.Wallet.Models
         private readonly Action<object> action;
         private bool canExecute = true;
 
-
         public ActionCommand(Action<object> action)
         {
             if (action == null)
@@ -65,6 +64,5 @@ namespace Borlay.Wallet.Models
         {
             CanExecuteChanged(this, new EventArgs());
         }
-
     }
 }

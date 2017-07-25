@@ -48,10 +48,7 @@ namespace Borlay.Wallet.Models
             decValue *= abs;
 
             if (count == 0)
-            {
-                //var sValue = String.Format("{0:0.000}", value);
                 return Math.Round(decValue, 3);
-            }
 
             var prefix = prefixes[count];
             return $"{decValue} {prefix}";
