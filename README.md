@@ -12,8 +12,8 @@ GFWIUIMANYAF99BGZOPJDSFWNSTJNQOQRTKGEMBCBAOKNSRXRNUSHYKYMQBGIKHDQNMCYGHEUL9TVF9L
 
 ### ClickOnce
 
-It is recomended to install the wallet using clickonce as you always will be up to date.
-[Wallet ClickOnce](http://www.wallet.borlay.org/downloads/index.html)
+It is recomended to install the wallet using [Wallet ClickOnce](http://www.wallet.borlay.org/downloads/index.html) as you always will be up to date.
+
 
 ### Security
 
