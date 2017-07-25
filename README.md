@@ -24,6 +24,12 @@ This wallet helps you to store and backup your seed in a secure way. Your seed i
 
 ### Print screens
 
+You can easily reattack your bad transaction and it ensures it to be send
 <img src="http://www.wallet.borlay.org/wallet/images/login_page.jpg" width="600">
+
+Login with your username and password
+<img src="http://www.wallet.borlay.org/wallet/images/login_page.jpg" width="600">
+
+Manage your addresses and send IOTAs from selected address
 <img src="http://www.wallet.borlay.org/wallet/images/wallet_page.jpg" width="600">
 
