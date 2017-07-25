@@ -1,6 +1,17 @@
 # Borlay.Wallet
 
-![Login page](http://www.wallet.borlay.org/wallet/images/login_page.jpg)
+### Introduction
 
+Desktop wallet for IOTA cryptocurrency.
 
-<img src="http://www.wallet.borlay.org/wallet/images/login_page.jpg" width="100">
+### Donation
+
+```IOTA
+GFWIUIMANYAF99BGZOPJDSFWNSTJNQOQRTKGEMBCBAOKNSRXRNUSHYKYMQBGIKHDQNMCYGHEUL9TVF9L9BBMMESNBP
+```
+
+### Print screens
+
+<img src="http://www.wallet.borlay.org/wallet/images/login_page.jpg" width="300">
+<img src="http://www.wallet.borlay.org/wallet/images/wallet_page.jpg" width="300">
+
