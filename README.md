@@ -24,7 +24,7 @@ This wallet helps you to store and backup your seed in a secure way. Your seed i
 
 ### Print screens
 
-You can easily reattack your bad transaction and it ensures it to be send
+You can easily reattack your bad transaction and it ensures it to be confirmed
 <img src="http://www.wallet.borlay.org/wallet/images/login_page.jpg" width="600">
 
 Login with your username and password
