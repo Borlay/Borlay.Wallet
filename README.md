@@ -12,6 +12,6 @@ GFWIUIMANYAF99BGZOPJDSFWNSTJNQOQRTKGEMBCBAOKNSRXRNUSHYKYMQBGIKHDQNMCYGHEUL9TVF9L
 
 ### Print screens
 
-<img src="http://www.wallet.borlay.org/wallet/images/login_page.jpg" width="300">
-<img src="http://www.wallet.borlay.org/wallet/images/wallet_page.jpg" width="300">
+<img src="http://www.wallet.borlay.org/wallet/images/login_page.jpg" width="500">
+<img src="http://www.wallet.borlay.org/wallet/images/wallet_page.jpg" width="500">
 
