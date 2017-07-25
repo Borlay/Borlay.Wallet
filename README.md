@@ -2,7 +2,7 @@
 
 ### Introduction
 
-This is desktop wallet for IOTA cryptocurrency. It is created to login to your wallet with an easy to remember username and password and helps you to manage the transactions flow. It generates the seed and stores it to your pc in an encrypted form. Don't forget your password since we cannot restore it. You can always backup your seed.
+This is desktop wallet for IOTA cryptocurrency. It is created to login to your wallet with an easy to remember username and password and helps you to manage transactions flow. It generates a seed and stores it to your pc in an encrypted form. Don't forget your password since we cannot restore it. You can always backup your seed.
 
 ### Donation
 
