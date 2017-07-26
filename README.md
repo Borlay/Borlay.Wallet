@@ -2,7 +2,7 @@
 
 ### Introduction
 
-This is desktop IOTA wallet for windows. It is created to login to your wallet with an easy to remember username and password and helps you to manage transactions flow. It generates a seed and stores it to your pc in an encrypted form. You can import your existing seed as well. Don't forget your password since we cannot restore it. You can always backup your seed.
+This is desktop IOTA wallet for windows. It is created to login to your wallet with an easy to remember username and password and helps you to manage your transactions flow. It generates a seed and stores it to your pc in an encrypted form. You can import an existing seed as well. Don't forget your password since we cannot restore it. You can always backup your seed.
 
 ### Donation
 
